@@ -44,6 +44,9 @@
     <!-- HTML5 QR Code Camera Scanner Library -->
     <script src="https://unpkg.com/html5-qrcode"></script>
 
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         body {
             font-family: 'Sarabun', sans-serif;
@@ -160,7 +163,7 @@
 
             #searchInput:focus, #categoryFilter:focus,
             #assetFormModal input:focus, #assetFormModal select:focus,
-            #assetFormModal textarea:focus, #gasSettingsModal input:focus,
+            #assetFormModal textarea:focus, #supabaseSettingsModal input:focus, #supabaseSettingsModal textarea:focus,
             #loginModal input:focus, #qrScannerModal input:focus {
                 border-color: #16a34a !important;
                 box-shadow: 0 0 0 3px rgba(34,197,94,.14) !important;
@@ -194,7 +197,7 @@
                 border-color: #d1fae5 !important;
             }
 
-            /* Google Sheets settings strip */
+            /* Supabases settings strip */
             main > div:nth-child(5) {
                 border-color: #dbeafe !important;
                 box-shadow: 0 8px 22px rgba(15,23,42,.05) !important;
@@ -213,8 +216,8 @@
             #detailModal > div > div:first-child,
             #assetFormModal > div > div:first-child,
             #categoryModal > div > div:first-child,
-            #gasSettingsModal > div > div:first-child,
-            #gasCodeModal > div > div:first-child {
+            #supabaseSettingsModal > div > div:first-child,
+            #supabaseInfoModal > div > div:first-child {
                 background: linear-gradient(135deg, #14532d 0%, #1e3a8a 58%, #166534 100%) !important;
             }
 
@@ -224,8 +227,8 @@
             #detailModal > div,
             #assetFormModal > div,
             #categoryModal > div,
-            #gasSettingsModal > div,
-            #gasCodeModal > div,
+            #supabaseSettingsModal > div,
+            #supabaseInfoModal > div,
             #assetQrPreviewModal > div {
                 border: 1px solid rgba(134,239,172,.45);
                 box-shadow: 0 24px 60px rgba(15,23,42,.22);
@@ -368,7 +371,7 @@
                 <div class="relative z-10 grid grid-cols-3 gap-3">
                     <div class="rounded-2xl bg-white/10 border border-white/15 p-4 backdrop-blur-sm"><i class="fa-solid fa-qrcode text-2xl text-emerald-300"></i><p class="mt-2 text-sm font-semibold">QR Code</p><p class="text-[11px] text-white/60">เข้าถึงข้อมูลทันที</p></div>
                     <div class="rounded-2xl bg-white/10 border border-white/15 p-4 backdrop-blur-sm"><i class="fa-solid fa-boxes-stacked text-2xl text-amber-300"></i><p class="mt-2 text-sm font-semibold">ทะเบียนครุภัณฑ์</p><p class="text-[11px] text-white/60">จัดการข้อมูลเป็นระบบ</p></div>
-                    <div class="rounded-2xl bg-white/10 border border-white/15 p-4 backdrop-blur-sm"><i class="fa-solid fa-database text-2xl text-sky-300"></i><p class="mt-2 text-sm font-semibold">Google Sheet</p><p class="text-[11px] text-white/60">ข้อมูลเชื่อมต่อออนไลน์</p></div>
+                    <div class="rounded-2xl bg-white/10 border border-white/15 p-4 backdrop-blur-sm"><i class="fa-solid fa-database text-2xl text-sky-300"></i><p class="mt-2 text-sm font-semibold">Supabase</p><p class="text-[11px] text-white/60">ข้อมูลเชื่อมต่อออนไลน์</p></div>
                 </div>
             </div>
             <div class="p-7 sm:p-10 flex items-center">
@@ -380,7 +383,7 @@
                         <p class="text-sm text-slate-500 mt-2">กรุณาเข้าสู่ระบบก่อนใช้งานระบบบริหารจัดการครุภัณฑ์</p>
                     </div>
                     <form onsubmit="handleStartupLogin(event)" class="space-y-5">
-                        <div><label for="startupUsername" class="block text-sm font-semibold text-slate-700 mb-2">ชื่อผู้ใช้งาน</label><div class="relative"><i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i><input type="text" id="startupUsername" autocomplete="username" required placeholder="Username" class="w-full pl-11 pr-4 py-3.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-phuket-600 focus:border-phuket-600 focus:outline-none transition"></div></div>
+                        <div><label for="startupUsername" class="block text-sm font-semibold text-slate-700 mb-2">อีเมลผู้ดูแลระบบ</label><div class="relative"><i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i><input type="text" id="startupUsername" autocomplete="username" required placeholder="admin@example.com" class="w-full pl-11 pr-4 py-3.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-phuket-600 focus:border-phuket-600 focus:outline-none transition"></div></div>
                         <div><label for="startupPassword" class="block text-sm font-semibold text-slate-700 mb-2">รหัสผ่าน</label><div class="relative"><i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i><input type="password" id="startupPassword" autocomplete="current-password" required placeholder="Password" class="w-full pl-11 pr-12 py-3.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-phuket-600 focus:border-phuket-600 focus:outline-none transition"><button type="button" onclick="toggleStartupPassword()" class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 text-slate-400 hover:text-slate-700" title="แสดง/ซ่อนรหัสผ่าน"><i id="startupPasswordIcon" class="fa-solid fa-eye"></i></button></div></div>
                         <p id="startupLoginError" class="hidden text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2.5"></p>
                         <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-phuket-700 to-emerald-600 hover:from-phuket-800 hover:to-emerald-700 text-white font-bold shadow-lg shadow-emerald-900/20 transition flex items-center justify-center gap-2"><i class="fa-solid fa-right-to-bracket"></i>เข้าสู่ระบบ</button>
@@ -410,7 +413,7 @@
                 <!-- Sync status indicator -->
                 <span id="syncBadge" class="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
                     <span class="w-2 h-2 mr-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                    เชื่อมต่อ Google Sheet แล้ว
+                    เชื่อมต่อ Supabase แล้ว
                 </span>
 
                 <!-- QR Code Scanner Button for General Users -->
@@ -525,25 +528,25 @@
             </button>
         </div>
 
-        <!-- Google Apps Script Settings & Code Reference Modal Link -->
+        <!-- Supabase Settings & Code Reference Modal Link -->
         <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col md:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-lg bg-emerald-100 text-phuket-700 flex items-center justify-center flex-shrink-0 font-bold">
                     <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
                 </div>
                 <div>
-                    <h4 class="text-sm font-bold text-slate-800">การเชื่อมต่อ Google Sheets & Google Apps Script</h4>
-                    <p class="text-xs text-slate-500">ซิงค์ข้อมูลกับแผ่นงาน: <a href="https://docs.google.com/spreadsheets/d/1mm7Jrc5DICxn_928BpImHDR7ZIg5Lc4grpvltWE1Rtc/edit?usp=sharing" target="_blank" class="text-phuket-600 underline hover:text-phuket-800">1mm7Jrc5DICxn_928...</a></p>
+                    <h4 class="text-sm font-bold text-slate-800">การเชื่อมต่อ Supabase Database</h4>
+                    <p class="text-xs text-slate-500">ฐานข้อมูล PostgreSQL ผ่าน Supabase Data API</p>
                 </div>
             </div>
             <div class="flex gap-2">
-                <button onclick="openGasSettingsModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg border transition flex items-center gap-1.5">
+                <button onclick="openSupabaseSettingsModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg border transition flex items-center gap-1.5">
                     <i class="fa-solid fa-gear"></i>
-                    <span>ตั้งค่า Web App URL</span>
+                    <span>ตั้งค่า Supabase</span>
                 </button>
-                <button onclick="openGasCodeModal()" class="px-3 py-1.5 bg-phuket-50 hover:bg-emerald-100 text-phuket-700 border border-emerald-200 text-xs font-semibold rounded-lg transition flex items-center gap-1.5">
+                <button onclick="openSupabaseInfoModal()" class="px-3 py-1.5 bg-phuket-50 hover:bg-emerald-100 text-phuket-700 border border-emerald-200 text-xs font-semibold rounded-lg transition flex items-center gap-1.5">
                     <i class="fa-solid fa-code"></i>
-                    <span>ดูโค้ด Code.gs</span>
+                    <span>ดู SQL / การตั้งค่า</span>
                 </button>
             </div>
         </div>
@@ -610,8 +613,8 @@
             </div>
             <form onsubmit="handleLogin(event)" class="p-6 space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">ชื่อผู้ใช้งาน (Username)</label>
-                    <input type="text" id="loginUsername" required placeholder=" admin" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-phuket-600 focus:outline-none">
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">อีเมลผู้ดูแลระบบ</label>
+                    <input type="text" id="loginUsername" required placeholder="admin@example.com" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-phuket-600 focus:outline-none">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">รหัสผ่าน (Password)</label>
@@ -619,7 +622,7 @@
                 </div>
                 <div class="p-3 bg-slate-50 rounded-lg text-xs text-slate-500 flex items-start gap-2">
                     <i class="fa-solid fa-circle-info text-phuket-600 mt-0.5"></i>
-                    <span>รหัสเข้าสู่ระบบสำหรับทดสอบ: Username = <b class="text-slate-700">admin</b> / Password = <b class="text-slate-700">admin1234</b></span>
+                    <span>เข้าสู่ระบบด้วยบัญชีที่สร้างไว้ใน Supabase Authentication (Email + Password)</span>
                 </div>
                 <div class="pt-2 flex justify-end gap-2">
                     <button type="button" onclick="closeModal('loginModal')" class="px-4 py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-50">ยกเลิก</button>
@@ -851,7 +854,7 @@
                         <div class="flex-grow space-y-1">
                             <input type="file" id="formImageFile" accept="image/*" onchange="previewImageFile(this)" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-phuket-100 file:text-phuket-800 hover:file:bg-phuket-200 cursor-pointer">
                             <input type="hidden" id="formImageUrl">
-                            <p class="text-[10px] text-slate-400">รองรับไฟล์ภาพ JPG, PNG (ระบบจะแปลงเป็น Base64/Drive URL เพื่อเก็บในระบบ)</p>
+                            <p class="text-[10px] text-slate-400">รองรับไฟล์ภาพ JPG, PNG (ระบบจะแปลงเป็น Supabase Storage URL เพื่อเก็บในระบบ)</p>
                         </div>
                     </div>
                 </div>
@@ -906,270 +909,42 @@
         </div>
     </div>
 
-    <!-- 6. GAS Settings Modal -->
-    <div id="gasSettingsModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <!-- 6. Supabase Settings Modal -->
+    <div id="supabaseSettingsModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
             <div class="bg-phuket-800 px-6 py-4 text-white flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-gear text-amber-400"></i>
-                    <h3 class="font-bold text-base">การเชื่อมต่อ Google Apps Script Web App</h3>
-                </div>
-                <button onclick="closeModal('gasSettingsModal')" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <div class="flex items-center gap-2"><i class="fa-solid fa-database text-amber-400"></i><h3 class="font-bold text-base">การตั้งค่า Supabase</h3></div>
+                <button onclick="closeModal('supabaseSettingsModal')" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-
-            <form onsubmit="saveGasSettings(event)" class="p-6 space-y-4 text-xs">
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Google Apps Script Web App URL</label>
-                    <input type="url" id="gasWebAppUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-phuket-600 focus:outline-none font-mono text-xs">
-                    <p class="text-[10px] text-slate-400 mt-1">วาง URL ของ Web App ที่ได้ทำการ Deploy จาก Google Apps Script เพื่อบันทึกข้อมูลเข้า Google Sheets โดยตรง</p>
-                </div>
-
-                <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-900 space-y-1">
-                    <p class="font-bold"><i class="fa-solid fa-circle-check mr-1"></i>ลิงก์ Google Sheet ปัจจุบัน:</p>
-                    <p class="font-mono text-[11px] break-all">https://docs.google.com/spreadsheets/d/1mm7Jrc5DICxn_928BpImHDR7ZIg5Lc4grpvltWE1Rtc/edit</p>
-                </div>
-
-                <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" onclick="closeModal('gasSettingsModal')" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-600 font-semibold hover:bg-slate-50">ยกเลิก</button>
-                    <button type="submit" class="px-4 py-2 bg-phuket-700 hover:bg-phuket-800 text-white rounded-lg font-semibold shadow">บันทึกการตั้งค่า</button>
-                </div>
+            <form onsubmit="saveSupabaseSettings(event)" class="p-6 space-y-4 text-xs">
+                <div><label class="block font-semibold text-slate-700 mb-1">Supabase Project URL</label><input type="url" id="supabaseUrlInput" placeholder="https://xxxxxxxx.supabase.co" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-phuket-600 focus:outline-none font-mono text-xs"></div>
+                <div><label class="block font-semibold text-slate-700 mb-1">Publishable / Anon Key</label><textarea id="supabaseKeyInput" rows="3" placeholder="sb_publishable_... หรือ anon key" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-phuket-600 focus:outline-none font-mono text-xs"></textarea></div>
+                <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-900"><p class="font-bold"><i class="fa-solid fa-shield-halved mr-1"></i>ความปลอดภัย</p><p class="mt-1">ใส่เฉพาะ Publishable/Anon Key ในเว็บเท่านั้น ห้ามใส่ service_role key เพราะ key ดังกล่าวต้องเก็บไว้ฝั่ง server และสามารถข้าม RLS ได้</p></div>
+                <div class="flex justify-end gap-2 pt-2"><button type="button" onclick="closeModal('supabaseSettingsModal')" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-600 font-semibold hover:bg-slate-50">ยกเลิก</button><button type="submit" class="px-4 py-2 bg-phuket-700 hover:bg-phuket-800 text-white rounded-lg font-semibold shadow">บันทึกการตั้งค่า</button></div>
             </form>
         </div>
     </div>
 
-    <!-- 7. GAS Code Reference Modal -->
-    <div id="gasCodeModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <!-- 7. Supabase Setup Info Modal -->
+    <div id="supabaseInfoModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden">
-            <div class="bg-phuket-800 px-6 py-4 text-white flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-code text-amber-400"></i>
-                    <h3 class="font-bold text-base">โค้ด Google Apps Script (Code.gs)</h3>
-                </div>
-                <button onclick="closeModal('gasCodeModal')" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="bg-phuket-800 px-6 py-4 text-white flex justify-between items-center"><div class="flex items-center gap-2"><i class="fa-solid fa-code text-amber-400"></i><h3 class="font-bold text-base">Supabase Database Setup</h3></div><button onclick="closeModal('supabaseInfoModal')" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button></div>
+            <div class="p-6 overflow-y-auto space-y-4 flex-grow text-xs">
+                <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg"><p class="font-bold text-emerald-900">ขั้นตอนสั้น ๆ</p><ol class="list-decimal ml-5 mt-1 space-y-1 text-emerald-900"><li>สร้าง Project ใน Supabase</li><li>เปิด SQL Editor แล้วรันไฟล์ <b>supabase_schema.sql</b></li><li>สร้าง Admin User ใน Authentication</li><li>นำ Project URL และ Publishable/Anon Key มาใส่ในเมนูตั้งค่า</li><li>Deploy ไฟล์ HTML นี้บน GitHub Pages</li></ol></div>
+                <pre id="supabaseSetupText" class="bg-slate-900 text-emerald-400 p-4 rounded-xl font-mono text-[11px] overflow-x-auto whitespace-pre-wrap">ฐานข้อมูล: public.assets / public.categories
+Storage bucket: asset-images
+Auth: Supabase Auth (Email + Password)
+RLS: ผู้ใช้ทั่วไปอ่านข้อมูลและรูปภาพได้ / ผู้ใช้ authenticated จัดการข้อมูลได้
+
+ดูไฟล์ supabase_schema.sql ที่จัดเตรียมให้พร้อมใช้งานในชุดนี้</pre>
+                <button onclick="copySupabaseSetup()" class="px-3 py-1.5 bg-phuket-700 hover:bg-phuket-800 text-white rounded text-[10px] font-semibold"><i class="fa-solid fa-copy mr-1"></i>คัดลอกสรุปการตั้งค่า</button>
             </div>
-
-            <div class="p-6 overflow-y-auto space-y-3 flex-grow text-xs">
-                <p class="text-slate-600">คัดลอกโค้ดด้านล่างนี้ไปวางในเมนู <b>ส่วนขยาย (Extensions) &gt; Apps Script</b> ใน Google Sheet ของคุณ แล้วทำการ Deploy เป็น Web App โดยโค้ดนี้จะสร้างชีต <b>Categories</b> สำหรับเก็บหมวดหมู่ และใช้ร่วมกันทุกเครื่อง:</p>
-                
-                <div class="relative">
-                    <button onclick="copyGasCode()" class="absolute right-2 top-2 px-3 py-1 bg-phuket-700 hover:bg-phuket-800 text-white rounded text-[10px] font-semibold">
-                        <i class="fa-solid fa-copy mr-1"></i>คัดลอกโค้ด
-                    </button>
-                    <pre id="gasCodeText" class="bg-slate-900 text-emerald-400 p-4 rounded-xl font-mono text-[11px] overflow-x-auto h-80">
-// ==========================================
-// Google Apps Script (Code.gs)
-// ระบบบริหารจัดการครุภัณฑ์ - เทศบาลนครภูเก็ต
-// ==========================================
-
-const SPREADSHEET_ID = "1mm7Jrc5DICxn_928BpImHDR7ZIg5Lc4grpvltWE1Rtc";
-const SHEET_NAME = "Data";
-const CATEGORY_SHEET_NAME = "Categories";
-const DEFAULT_CATEGORIES = ["โต๊ะ", "เก้าอี้", "ตู้", "คอมพิวเตอร์", "พัดลม", "เครื่องปริ้น"];
-
-function doGet(e) {
-  try {
-    const action = e && e.parameter ? (e.parameter.action || 'status') : 'status';
-    if (action === 'read') return readAssets_();
-    if (action === 'readCategories') return readCategories_();
-    return responseJSON({ status: "success", message: "Phuket Municipality Asset API Ready" });
-  } catch (error) {
-    return responseJSON({ status: "error", message: error.toString() });
-  }
-}
-
-function doPost(e) {
-  try {
-    let contents = {};
-    if (e && e.postData && e.postData.contents) {
-      try {
-        contents = JSON.parse(e.postData.contents);
-      } catch (jsonError) {
-        contents = e.parameter || {};
-        if (typeof contents.data === 'string') contents.data = JSON.parse(contents.data);
-      }
-    } else {
-      contents = e.parameter || {};
-    }
-
-    const action = contents.action;
-    if (action === 'read') return readAssets_();
-    if (action === 'readCategories') return readCategories_();
-    if (action === 'addCategory') return addCategory_(contents.name);
-    if (action === 'deleteCategory') return deleteCategory_(contents.name);
-
-    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-    let sheet = ss.getSheetByName(SHEET_NAME);
-    if (!sheet) {
-      sheet = ss.insertSheet(SHEET_NAME);
-      sheet.appendRow(["ID", "Category", "Name", "Code", "Detail", "Budget", "Amount", "ReceivedDate", "DikaNo", "Location", "ImageUrl"]);
-    }
-
-    if (action === "save") {
-      const item = contents.data || {};
-      const data = sheet.getDataRange().getValues();
-      let rowIndex = -1;
-      for (let i = 1; i < data.length; i++) {
-        if (String(data[i][0]) === String(item.id)) { rowIndex = i + 1; break; }
-      }
-      const rowValues = [
-        item.id || Utilities.getUuid(), item.category || '', item.name || '', item.code || '',
-        item.detail || '', item.budget || '', Number(String(item.amount == null ? 0 : item.amount).replace(/,/g, '')) || 0, item.receivedDate || '',
-        item.dikaNo || '', item.location || '', item.imageUrl || ''
-      ];
-      if (rowIndex > 0) sheet.getRange(rowIndex, 1, 1, rowValues.length).setValues([rowValues]);
-      else sheet.appendRow(rowValues);
-      return responseJSON({ status: "success", message: "Data saved successfully" });
-    }
-
-    if (action === "delete") {
-      const id = contents.id;
-      const data = sheet.getDataRange().getValues();
-      for (let i = 1; i < data.length; i++) {
-        if (String(data[i][0]) === String(id)) { sheet.deleteRow(i + 1); break; }
-      }
-      return responseJSON({ status: "success", message: "Data deleted" });
-    }
-
-    return responseJSON({ status: "error", message: "Unknown action" });
-  } catch (error) {
-    return responseJSON({ status: "error", message: error.toString() });
-  }
-}
-
-function ensureCategorySheet_() {
-  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-  let sheet = ss.getSheetByName(CATEGORY_SHEET_NAME);
-
-  if (!sheet) {
-    sheet = ss.insertSheet(CATEGORY_SHEET_NAME);
-    sheet.getRange(1, 1).setValue('Category');
-
-    const existing = [];
-    const dataSheet = ss.getSheetByName(SHEET_NAME);
-    if (dataSheet && dataSheet.getLastRow() > 1) {
-      const values = dataSheet.getRange(2, 2, dataSheet.getLastRow() - 1, 1).getValues();
-      values.forEach(r => {
-        const name = String(r[0] || '').trim();
-        if (name && !existing.includes(name)) existing.push(name);
-      });
-    }
-
-    const initial = existing.length ? existing : DEFAULT_CATEGORIES.slice();
-    if (initial.length) sheet.getRange(2, 1, initial.length, 1).setValues(initial.map(x => [x]));
-  }
-
-  return sheet;
-}
-
-function readCategories_() {
-  const sheet = ensureCategorySheet_();
-  const lastRow = sheet.getLastRow();
-  const categories = lastRow > 1
-    ? sheet.getRange(2, 1, lastRow - 1, 1).getValues().map(r => String(r[0] || '').trim()).filter(Boolean)
-    : [];
-
-  return responseJSON({ status: "success", data: categories });
-}
-
-function addCategory_(name) {
-  const category = String(name || '').trim();
-  if (!category) return responseJSON({ status: "error", message: "กรุณาระบุชื่อหมวดหมู่" });
-
-  const sheet = ensureCategorySheet_();
-  const lastRow = sheet.getLastRow();
-  const existing = lastRow > 1
-    ? sheet.getRange(2, 1, lastRow - 1, 1).getValues().map(r => String(r[0] || '').trim()).filter(Boolean)
-    : [];
-
-  if (existing.some(x => x.toLowerCase() === category.toLowerCase())) {
-    return responseJSON({ status: "error", message: "หมวดหมู่นี้มีอยู่ในระบบแล้ว" });
-  }
-
-  sheet.getRange(sheet.getLastRow() + 1, 1).setValue(category);
-  return responseJSON({ status: "success", message: "เพิ่มหมวดหมู่เรียบร้อยแล้ว", data: existing.concat([category]) });
-}
-
-function deleteCategory_(name) {
-  const category = String(name || '').trim();
-  if (!category) return responseJSON({ status: "error", message: "ไม่พบชื่อหมวดหมู่" });
-
-  const sheet = ensureCategorySheet_();
-  const lastRow = sheet.getLastRow();
-  const values = lastRow > 1 ? sheet.getRange(2, 1, lastRow - 1, 1).getValues() : [];
-  const categories = values.map(r => String(r[0] || '').trim()).filter(Boolean);
-
-  if (categories.length <= 1) {
-    return responseJSON({ status: "error", message: "ต้องมีหมวดหมู่เหลืออย่างน้อย 1 รายการ" });
-  }
-
-  // ป้องกันการลบหมวดหมู่ที่ยังมีครุภัณฑ์ใช้งานอยู่
-  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-  const dataSheet = ss.getSheetByName(SHEET_NAME);
-  if (dataSheet && dataSheet.getLastRow() > 1) {
-    const assetCategories = dataSheet.getRange(2, 2, dataSheet.getLastRow() - 1, 1).getValues();
-    const usedCount = assetCategories.filter(r => String(r[0] || '').trim() === category).length;
-    if (usedCount > 0) {
-      return responseJSON({ status: "error", message: `ไม่สามารถลบหมวดหมู่ "${category}" ได้ เนื่องจากมีครุภัณฑ์ ${usedCount} รายการใช้งานหมวดหมู่นี้อยู่` });
-    }
-  }
-
-  for (let i = 0; i < categories.length; i++) {
-    if (categories[i].toLowerCase() === category.toLowerCase()) {
-      sheet.deleteRow(i + 2);
-      break;
-    }
-  }
-
-  return responseJSON({ status: "success", message: "ลบหมวดหมู่เรียบร้อยแล้ว" });
-}
-
-function readAssets_() {
-  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-  let sheet = ss.getSheetByName(SHEET_NAME);
-  const categoriesSheet = ensureCategorySheet_();
-
-  if (!sheet) return responseJSON({ status: "success", data: [], categories: readCategoriesArray_(categoriesSheet) });
-
-  const values = sheet.getDataRange().getValues();
-  const rows = values.length <= 1 ? [] : values.slice(1).map(r => ({
-    id: r[0] == null ? '' : String(r[0]),
-    category: r[1] == null ? '' : String(r[1]),
-    name: r[2] == null ? '' : String(r[2]),
-    code: r[3] == null ? '' : String(r[3]),
-    detail: r[4] == null ? '' : String(r[4]),
-    budget: r[5] == null ? '' : String(r[5]),
-    amount: r[6] == null ? 0 : Number(String(r[6]).replace(/,/g, '')) || 0,
-    receivedDate: r[7] == null ? '' : String(r[7]),
-    dikaNo: r[8] == null ? '' : String(r[8]),
-    location: r[9] == null ? '' : String(r[9]),
-    imageUrl: r[10] == null ? '' : String(r[10])
-  })).filter(x => x.id || x.code || x.name);
-
-  return responseJSON({ status: "success", data: rows, categories: readCategoriesArray_(categoriesSheet) });
-}
-
-function readCategoriesArray_(sheet) {
-  const lastRow = sheet.getLastRow();
-  return lastRow > 1
-    ? sheet.getRange(2, 1, lastRow - 1, 1).getValues().map(r => String(r[0] || '').trim()).filter(Boolean)
-    : [];
-}
-
-function responseJSON(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-</pre>
-                </div>
-            </div>
-
-            <div class="bg-slate-50 px-6 py-3 border-t border-slate-200 flex justify-end">
-                <button onclick="closeModal('gasCodeModal')" class="px-4 py-2 bg-phuket-700 text-white rounded-lg text-xs font-semibold">ปิด</button>
-            </div>
+            <div class="bg-slate-50 px-6 py-3 border-t border-slate-200 flex justify-end"><button onclick="closeModal('supabaseInfoModal')" class="px-4 py-2 bg-phuket-700 text-white rounded-lg text-xs font-semibold">ปิด</button></div>
         </div>
     </div>
 
     <!-- Application JavaScript Logic -->
+
     <script>
 
         // ===== QR Logo Settings =====
@@ -1216,35 +991,52 @@ function responseJSON(obj) {
             });
         }
 
+        // ==================== SUPABASE CONFIG ====================
+        const DEFAULT_SUPABASE_URL = 'https://dqhbqzgfbwalewsyeums.supabase.co/rest/v1/';
+        const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxaGJxemdmYndhbGV3c3lldW1zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1MTMzMjIsImV4cCI6MjEwNjA4OTMyMn0.99q1psKXMp7_KD7uK2CAFI-2qwggzz_mW5EAduDIfQA';
+
+        let supabaseUrl = localStorage.getItem('phuket_supabase_url') || DEFAULT_SUPABASE_URL;
+        let supabaseAnonKey = localStorage.getItem('phuket_supabase_anon_key') || DEFAULT_SUPABASE_ANON_KEY;
+        let supabaseClient = null;
+
+        function initSupabaseClient() {
+            if (!supabaseUrl || !supabaseAnonKey || typeof window.supabase === 'undefined') {
+                supabaseClient = null;
+                return false;
+            }
+            try {
+                supabaseClient = window.supabase.createClient(supabaseUrl, supabaseAnonKey, {
+                    auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
+                });
+                return true;
+            } catch (e) {
+                console.error('Supabase initialization error:', e);
+                supabaseClient = null;
+                return false;
+            }
+        }
+
         // Default System Categories
         let categories = ['โต๊ะ', 'เก้าอี้', 'ตู้', 'คอมพิวเตอร์', 'พัดลม', 'เครื่องปริ้น'];
-
-        // Real Asset Data loaded directly from Google Sheet
         let assets = [];
-
-        // System App State
+        let totalAssetCount = 0;
         let isAdminLoggedIn = false;
         let currentSelectedAsset = null;
-        const DEFAULT_GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzb7qu82V06s4hMOHQbszCmid1EFyjoZG0UGCuF3Dt3jkuBN5tUJ0gG2UsxPaj1AKK4/exec';
-        let gasWebAppUrl = localStorage.getItem('phuket_gas_url') || DEFAULT_GAS_WEB_APP_URL;
         let gasConnectionStatus = 'connecting';
         let html5QrCodeScanner = null;
+        let searchDebounceTimer = null;
 
         // แปลงวันที่ให้แสดงเฉพาะ วัน/เดือน/ปี พ.ศ. เช่น 15/10/2569
         function formatThaiDate(value) {
             if (value === null || value === undefined || value === '') return '';
             const raw = String(value).trim();
             if (!raw) return '';
-
-            // กรณีเป็นรูปแบบ วัน/เดือน/ปี อยู่แล้ว
             let m = raw.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
             if (m) {
                 let year = Number(m[3]);
                 if (year < 2400) year += 543;
                 return `${String(Number(m[1])).padStart(2, '0')}/${String(Number(m[2])).padStart(2, '0')}/${year}`;
             }
-
-            // กรณีเป็นข้อความจาก JavaScript เช่น Sun Oct 15 2569 00:00:00 GMT+0700
             m = raw.match(/(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+([A-Za-z]{3})\s+(\d{1,2})\s+(\d{4})/i);
             if (m) {
                 const months = {Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
@@ -1255,37 +1047,31 @@ function responseJSON(obj) {
                     return `${String(Number(m[2])).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}`;
                 }
             }
-
-            // กรณี ISO เช่น 2026-10-15T00:00:00.000Z
             m = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
-            if (m) {
-                const year = Number(m[1]) + 543;
-                return `${String(Number(m[3])).padStart(2, '0')}/${String(Number(m[2])).padStart(2, '0')}/${year}`;
-            }
-
-            // กรณี Date ที่ JavaScript parse ได้
+            if (m) return `${String(Number(m[3])).padStart(2, '0')}/${String(Number(m[2])).padStart(2, '0')}/${Number(m[1]) + 543}`;
             const d = new Date(raw);
-            if (!Number.isNaN(d.getTime())) {
-                return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear() + 543}`;
-            }
-
+            if (!Number.isNaN(d.getTime())) return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear() + 543}`;
             return raw;
         }
 
-        // ===== ระบบจัดรูปแบบจำนวนเงิน =====
+        function thaiDateToStorage(value) {
+            const raw = String(value || '').trim();
+            const m = raw.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+            if (!m) return raw;
+            let year = Number(m[3]);
+            if (year > 2400) year -= 543;
+            return `${year}-${String(Number(m[2])).padStart(2,'0')}-${String(Number(m[1])).padStart(2,'0')}`;
+        }
+
         function formatAmountInput(value) {
             if (value === null || value === undefined || value === '') return '';
             let raw = String(value).replace(/,/g, '').replace(/[^0-9.]/g, '');
             if (!raw) return '';
-
             const parts = raw.split('.');
             let integerPart = parts[0] || '0';
             const decimalPart = parts.length > 1 ? parts.slice(1).join('').slice(0, 2) : '';
-
-            // ตัดเลข 0 ด้านหน้าที่ไม่จำเป็น แต่คง 0 ไว้กรณีเป็นทศนิยม
             integerPart = integerPart.replace(/^0+(?=\d)/, '');
             integerPart = Number(integerPart || 0).toLocaleString('en-US');
-
             return parts.length > 1 ? `${integerPart}.${decimalPart}` : integerPart;
         }
 
@@ -1293,98 +1079,104 @@ function responseJSON(obj) {
             const input = document.getElementById('formAmount');
             if (!input || input.dataset.amountFormatterReady === '1') return;
             input.dataset.amountFormatterReady = '1';
-
             input.addEventListener('input', function () {
                 const start = this.selectionStart;
-                const before = this.value;
-                const rawBefore = before.slice(0, start).replace(/,/g, '');
-                const formatted = formatAmountInput(before);
-                this.value = formatted;
-
-                // พยายามรักษาตำแหน่ง cursor ขณะ comma ถูกเพิ่ม/ลบ
-                const newPos = formatAmountInput(rawBefore).length;
-                try { this.setSelectionRange(newPos, newPos); } catch (e) {}
+                const rawBefore = this.value.slice(0, start).replace(/,/g, '');
+                this.value = formatAmountInput(this.value);
+                try { this.setSelectionRange(formatAmountInput(rawBefore).length, formatAmountInput(rawBefore).length); } catch (e) {}
             });
-
-            input.addEventListener('blur', function () {
-                if (this.value !== '') this.value = formatAmountInput(this.value);
-            });
+            input.addEventListener('blur', function () { if (this.value !== '') this.value = formatAmountInput(this.value); });
         }
 
-        // Initialize App on DOM Load
-        document.addEventListener('DOMContentLoaded', () => {
-            loadStoredCategories();
-            setupAmountFormatter();
-            loadAssetsFromGoogleSheet();
-            setTimeout(() => document.getElementById('startupUsername')?.focus(), 150);
+        function normalizeAsset(item) {
+            return {
+                id: String(item.id || item.code || '').trim(),
+                category: String(item.category || 'ทั่วไป').trim(),
+                name: String(item.name || 'ไม่มีชื่อรายการ').trim(),
+                code: String(item.code || item.id || '').trim(),
+                detail: String(item.detail || '').trim(),
+                budget: String(item.budget || '').trim(),
+                amount: Number(item.amount || 0),
+                receivedDate: formatThaiDate(item.received_date ?? item.receivedDate),
+                dikaNo: String(item.dika_no ?? item.dikaNo ?? '').trim(),
+                location: String(item.location || '').trim(),
+                imageUrl: String(item.image_url ?? item.imageUrl ?? '').trim()
+            };
+        }
 
-            // Check URL query parameters for QR code scan direct link (e.g. ?id=AST-1002)
-            const urlParams = new URLSearchParams(window.location.search);
-            const scanAssetId = urlParams.get('id') || urlParams.get('code');
-            if (scanAssetId) {
-                const targetDecoded = decodeURIComponent(scanAssetId);
-                const checkInterval = setInterval(() => {
-                    const targetAsset = assets.find(a => a.id === targetDecoded || a.code === targetDecoded || a.id === scanAssetId || a.code === scanAssetId);
-                    if (targetAsset) {
-                        openDetailModal(targetAsset);
-                        clearInterval(checkInterval);
-                    }
-                }, 300);
-            }
-        });
+        async function getSession() {
+            if (!supabaseClient) return null;
+            const { data } = await supabaseClient.auth.getSession();
+            return data?.session || null;
+        }
 
-        async function loadAssetsFromGoogleSheet() {
-            const url = gasWebAppUrl || DEFAULT_GAS_WEB_APP_URL;
-            setSyncStatus('connecting', 'กำลังเชื่อมต่อ Google Sheet...');
+        function applyAuthSession(session) {
+            isAdminLoggedIn = !!session;
+            document.getElementById('adminControls')?.classList.toggle('hidden', !isAdminLoggedIn);
+            document.getElementById('authText').textContent = isAdminLoggedIn ? 'ออกจากระบบ (Admin)' : 'เข้าสู่ระบบ Admin';
+            document.getElementById('authIcon').className = isAdminLoggedIn ? 'fa-solid fa-right-from-bracket' : 'fa-solid fa-right-to-bracket';
+        }
 
-            try {
-                // ใช้ GET ผ่าน Apps Script โดยตรง ไม่พึ่ง GViz
-                const response = await fetch(url + (url.includes('?') ? '&' : '?') + 'action=read', {
-                    method: 'GET',
-                    cache: 'no-store',
-                    redirect: 'follow'
-                });
+        async function refreshAdminState() {
+            const session = await getSession();
+            applyAuthSession(session);
+            return session;
+        }
 
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const result = await response.json();
-                if (result.status !== 'success') throw new Error(result.message || 'API returned an error');
+        async function loadCategoriesFromSupabase() {
+            if (!supabaseClient) return;
+            const { data, error } = await supabaseClient.from('categories').select('name').order('name');
+            if (error) throw error;
+            categories = (data || []).map(x => String(x.name).trim()).filter(Boolean);
+        }
 
-                const rows = Array.isArray(result.data) ? result.data : [];
-                const sheetCategories = Array.isArray(result.categories) ? result.categories.map(x => String(x).trim()).filter(Boolean) : [];
-                const fetchedCategories = new Set(sheetCategories.length ? sheetCategories : categories);
-                const fetchedAssets = rows.map((item, index) => {
-                    const category = String(item.category || 'ทั่วไป').trim();
-                    const rawId = String(item.id || '').trim();
-                    const code = String(item.code || '').trim();
-                    if (category && !fetchedCategories.has(category)) fetchedCategories.add(category);
-                    return {
-                        id: rawId || code || `AST-${Date.now()}-${index + 1}`,
-                        category,
-                        name: String(item.name || 'ไม่มีชื่อรายการ').trim(),
-                        code: code || rawId,
-                        detail: String(item.detail || '').trim(),
-                        budget: String(item.budget || '').trim(),
-                        amount: parseFloat(String(item.amount ?? 0).replace(/,/g, '')) || 0,
-                        receivedDate: formatThaiDate(item.receivedDate),
-                        dikaNo: String(item.dikaNo || '').trim(),
-                        location: String(item.location || '').trim(),
-                        imageUrl: String(item.imageUrl || '').trim()
-                    };
-                }).filter(item => item.name || item.code);
-
-                assets = fetchedAssets;
-                categories = Array.from(fetchedCategories);
-                gasConnectionStatus = 'connected';
-                setSyncStatus('connected', `เชื่อมต่อ Google Sheet แล้ว (${assets.length} รายการ)`);
-            } catch (err) {
-                console.error('Google Apps Script read error:', err);
-                gasConnectionStatus = 'error';
-                setSyncStatus('error', 'เชื่อมต่อ Google Sheet ไม่สำเร็จ');
+        async function loadAssetsFromSupabase(page = currentAssetPage) {
+            if (!initSupabaseClient()) {
+                setSyncStatus('error', 'ยังไม่ได้ตั้งค่า Supabase');
                 assets = [];
+                totalAssetCount = 0;
+                populateCategoryDropdowns();
+                renderAssets();
+                return;
             }
+            try {
+                setSyncStatus('connecting', 'กำลังเชื่อมต่อ Supabase...');
+                await loadCategoriesFromSupabase();
+                const search = document.getElementById('searchInput')?.value.trim() || '';
+                const category = document.getElementById('categoryFilter')?.value || '';
+                const safeSearch = search.replace(/[,%()]/g, ' ').replace(/\s+/g, ' ').trim();
+                const from = Math.max(0, (page - 1) * ASSETS_PER_PAGE);
+                const to = from + ASSETS_PER_PAGE - 1;
 
-            populateCategoryDropdowns();
-            renderAssets();
+                let query = supabaseClient.from('assets').select('*', { count: 'exact' }).order('created_at', { ascending: false }).range(from, to);
+                if (safeSearch) query = query.or(`name.ilike.%${safeSearch}%,code.ilike.%${safeSearch}%,location.ilike.%${safeSearch}%`);
+                if (category) query = query.eq('category', category);
+                const { data, error, count } = await query;
+                if (error) throw error;
+
+                assets = (data || []).map(normalizeAsset).filter(x => x.id || x.code || x.name);
+                totalAssetCount = Number(count || 0);
+                currentAssetPage = page;
+                gasConnectionStatus = 'connected';
+                setSyncStatus('connected', `เชื่อมต่อ Supabase แล้ว (${totalAssetCount.toLocaleString('th-TH')} รายการ)`);
+                populateCategoryDropdowns();
+                renderAssets();
+            } catch (err) {
+                console.error('Supabase read error:', err);
+                gasConnectionStatus = 'error';
+                setSyncStatus('error', 'เชื่อมต่อ Supabase ไม่สำเร็จ');
+                assets = [];
+                totalAssetCount = 0;
+                renderAssets();
+            }
+        }
+
+        async function fetchAssetByIdOrCode(value) {
+            if (!supabaseClient || !value) return null;
+            const key = String(value).trim();
+            let { data } = await supabaseClient.from('assets').select('*').eq('id', key).maybeSingle();
+            if (!data) ({ data } = await supabaseClient.from('assets').select('*').eq('code', key).maybeSingle());
+            return data ? normalizeAsset(data) : null;
         }
 
         function setSyncStatus(status, message) {
@@ -1403,21 +1195,39 @@ function responseJSON(obj) {
             }
         }
 
-        async function callGasApi(payload) {
-            const url = gasWebAppUrl || DEFAULT_GAS_WEB_APP_URL;
-            const body = new URLSearchParams();
-            Object.entries(payload).forEach(([key, value]) => {
-                body.set(key, typeof value === 'object' ? JSON.stringify(value) : String(value ?? ''));
-            });
+        // Initialize App on DOM Load
+        document.addEventListener('DOMContentLoaded', async () => {
+            setupAmountFormatter();
+            initSupabaseClient();
+            await refreshAdminState();
+            if (isAdminLoggedIn) {
+                const loginPage = document.getElementById('startupLogin');
+                if (loginPage) loginPage.classList.add('hidden');
+            }
+            if (supabaseClient) {
+                supabaseClient.auth.onAuthStateChange((_event, session) => {
+                    applyAuthSession(session);
+                    if (session) document.getElementById('startupLogin')?.classList.add('hidden');
+                });
+            }
+            await loadAssetsFromSupabase(1);
+            setTimeout(() => document.getElementById('startupUsername')?.focus(), 150);
 
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-                body
-            });
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            return await response.json();
-        }
+            const urlParams = new URLSearchParams(window.location.search);
+            const scanAssetId = urlParams.get('id') || urlParams.get('code');
+            if (scanAssetId) {
+                const target = decodeURIComponent(scanAssetId);
+                setTimeout(async () => {
+                    const asset = await fetchAssetByIdOrCode(target);
+                    if (asset) {
+                        qrScanOnlyMode = true;
+                        document.body.classList.add('qr-scan-only');
+                        document.getElementById('startupLogin')?.classList.add('hidden');
+                        openDetailModal(asset);
+                    }
+                }, 150);
+            }
+        });
 
         // Camera QR Code Scanner Functions
         let qrScanOnlyMode = false;
@@ -1474,10 +1284,8 @@ function responseJSON(obj) {
             }
         }
 
-        function processScannedQrCode(qrData) {
+        async function processScannedQrCode(qrData) {
             let targetId = qrData;
-
-            // Extract ID from full URL if scanned URL format
             if (qrData.includes('?id=') || qrData.includes('?code=')) {
                 try {
                     const url = new URL(qrData);
@@ -1487,30 +1295,22 @@ function responseJSON(obj) {
                     if (match) targetId = match[1];
                 }
             }
-
+            try { targetId = decodeURIComponent(targetId); } catch(e) {}
             try {
-                targetId = decodeURIComponent(targetId);
-            } catch(e){}
-
-            const asset = assets.find(a => a.id === targetId || a.code === targetId);
-
-            if (asset) {
-                // โหมดสแกน QR: แสดงเฉพาะ Popup "รายละเอียดข้อมูลครุภัณฑ์"
-                // ซ่อนหน้า Login / Header / รายการครุภัณฑ์ทั้งหมด เพื่อไม่ให้ข้อมูลรายการอื่นปรากฏร่วมกัน
-                qrScanOnlyMode = true;
-                document.body.classList.add('qr-scan-only');
-
-                const loginPage = document.getElementById('startupLogin');
-                if (loginPage) {
-                    loginPage.classList.add('hidden');
-                    loginPage.style.opacity = '';
-                    loginPage.style.pointerEvents = '';
+                setSyncStatus('connecting', 'กำลังค้นหาครุภัณฑ์...');
+                const asset = await fetchAssetByIdOrCode(targetId);
+                if (asset) {
+                    qrScanOnlyMode = true;
+                    document.body.classList.add('qr-scan-only');
+                    const loginPage = document.getElementById('startupLogin');
+                    if (loginPage) { loginPage.classList.add('hidden'); loginPage.style.opacity = ''; loginPage.style.pointerEvents = ''; }
+                    openDetailModal(asset);
+                } else {
+                    alert(`ไม่พบข้อมูลครุภัณฑ์รหัส: ${targetId}`);
                 }
-
-                // เปิดเฉพาะรายละเอียดของครุภัณฑ์ที่ตรงกับ QR ที่สแกนเท่านั้น
-                openDetailModal(asset);
-            } else {
-                alert(`ไม่พบข้อมูลครุภัณฑ์รหัส: ${targetId}`);
+            } catch (err) {
+                console.error('QR lookup error:', err);
+                alert('ไม่สามารถค้นหาข้อมูลครุภัณฑ์ได้\n\n' + err.message);
             }
         }
 
@@ -1526,43 +1326,20 @@ function responseJSON(obj) {
         }
 
         // Category Management Functions
-        // หมวดหมู่หลักเก็บบน Google Sheet เพื่อให้ทุกเครื่องเห็นข้อมูลชุดเดียวกัน
-        function loadStoredCategories() {
-            const stored = localStorage.getItem('phuket_asset_categories');
-            if (stored) {
-                try {
-                    const localCategories = JSON.parse(stored);
-                    if (Array.isArray(localCategories) && localCategories.length) categories = localCategories;
-                } catch(e){}
-            }
-        }
-
         function populateCategoryDropdowns() {
             const filterSelect = document.getElementById('categoryFilter');
             const formSelect = document.getElementById('formCategory');
             if (!filterSelect || !formSelect) return;
-
             const curFilter = filterSelect.value;
             const curForm = formSelect.value;
-
             filterSelect.innerHTML = '<option value="">-- ทั้งหมดทุกหมวดหมู่ --</option>';
             formSelect.innerHTML = '';
-
             categories.forEach(cat => {
-                const opt1 = document.createElement('option');
-                opt1.value = cat;
-                opt1.textContent = cat;
-                filterSelect.appendChild(opt1);
-
-                const opt2 = document.createElement('option');
-                opt2.value = cat;
-                opt2.textContent = cat;
-                formSelect.appendChild(opt2);
+                const opt1 = document.createElement('option'); opt1.value = cat; opt1.textContent = cat; filterSelect.appendChild(opt1);
+                const opt2 = document.createElement('option'); opt2.value = cat; opt2.textContent = cat; formSelect.appendChild(opt2);
             });
-
             filterSelect.value = categories.includes(curFilter) ? curFilter : '';
             formSelect.value = categories.includes(curForm) ? curForm : (categories[0] || '');
-
             renderCategoryListContainer();
             updateStats();
         }
@@ -1570,22 +1347,12 @@ function responseJSON(obj) {
         function renderCategoryListContainer() {
             const container = document.getElementById('categoryListContainer');
             if (!container) return;
-
             container.innerHTML = '';
-            if (!categories.length) {
-                container.innerHTML = '<div class="px-3 py-4 text-center text-slate-400">ยังไม่มีหมวดหมู่</div>';
-                return;
-            }
-
-            categories.forEach((cat) => {
+            if (!categories.length) { container.innerHTML = '<div class="px-3 py-4 text-center text-slate-400">ยังไม่มีหมวดหมู่</div>'; return; }
+            categories.forEach(cat => {
                 const div = document.createElement('div');
                 div.className = 'px-3 py-2 flex justify-between items-center bg-white hover:bg-slate-50';
-                div.innerHTML = `
-                    <span class="font-medium text-slate-800"><i class="fa-solid fa-tag text-phuket-600 mr-2"></i>${escapeHtml(cat)}</span>
-                    <button onclick="deleteCategory(${JSON.stringify(cat).replace(/"/g, '&quot;')})" class="text-red-500 hover:text-red-700 p-1" title="ลบหมวดหมู่">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                `;
+                div.innerHTML = `<span class="font-medium text-slate-800"><i class="fa-solid fa-tag text-phuket-600 mr-2"></i>${escapeHtml(cat)}</span><button onclick="deleteCategory(${JSON.stringify(cat).replace(/"/g, '&quot;')})" class="text-red-500 hover:text-red-700 p-1" title="ลบหมวดหมู่"><i class="fa-solid fa-trash-can"></i></button>`;
                 container.appendChild(div);
             });
         }
@@ -1593,43 +1360,35 @@ function responseJSON(obj) {
         async function addCategory() {
             const input = document.getElementById('newCategoryInput');
             const val = input.value.trim();
-            if (!val) return;
-
-            if (categories.some(x => String(x).toLowerCase() === val.toLowerCase())) {
-                alert('หมวดหมู่นี้มีอยู่ในระบบแล้ว');
-                return;
-            }
-
+            if (!val || !supabaseClient) return;
+            if (categories.some(x => String(x).toLowerCase() === val.toLowerCase())) { alert('หมวดหมู่นี้มีอยู่ในระบบแล้ว'); return; }
             try {
                 setSyncStatus('connecting', 'กำลังเพิ่มหมวดหมู่...');
-                const result = await callGasApi({ action: 'addCategory', name: val });
-                if (result.status !== 'success') throw new Error(result.message || 'เพิ่มหมวดหมู่ไม่สำเร็จ');
-
+                const { error } = await supabaseClient.from('categories').insert({ name: val });
+                if (error) throw error;
                 input.value = '';
-                await loadAssetsFromGoogleSheet();
+                await loadAssetsFromSupabase(currentAssetPage);
                 openManageCategoryModal();
             } catch (err) {
-                console.error('GAS add category error:', err);
+                console.error('Supabase add category error:', err);
                 setSyncStatus('error', 'เพิ่มหมวดหมู่ไม่สำเร็จ');
-                alert('ไม่สามารถเพิ่มหมวดหมู่ลง Google Sheet ได้\n\n' + err.message);
+                alert('ไม่สามารถเพิ่มหมวดหมู่ลง Supabase ได้\n\n' + err.message);
             }
         }
 
         async function deleteCategory(categoryName) {
-            if (!categoryName) return;
-            if (!confirm(`คุณต้องการลบหมวดหมู่ "${categoryName}" หรือไม่?\n\nข้อมูลจะถูกลบจาก Google Sheet และมีผลกับทุกเครื่อง`)) return;
-
+            if (!categoryName || !supabaseClient) return;
+            if (!confirm(`คุณต้องการลบหมวดหมู่ "${categoryName}" หรือไม่?\n\nหมวดหมู่ที่มีครุภัณฑ์ใช้งานอยู่จะไม่สามารถลบได้`)) return;
             try {
                 setSyncStatus('connecting', 'กำลังลบหมวดหมู่...');
-                const result = await callGasApi({ action: 'deleteCategory', name: categoryName });
-                if (result.status !== 'success') throw new Error(result.message || 'ลบหมวดหมู่ไม่สำเร็จ');
-
-                await loadAssetsFromGoogleSheet();
+                const { error } = await supabaseClient.from('categories').delete().eq('name', categoryName);
+                if (error) throw error;
+                await loadAssetsFromSupabase(1);
                 openManageCategoryModal();
             } catch (err) {
-                console.error('GAS delete category error:', err);
+                console.error('Supabase delete category error:', err);
                 setSyncStatus('error', 'ลบหมวดหมู่ไม่สำเร็จ');
-                alert('ไม่สามารถลบหมวดหมู่จาก Google Sheet ได้\n\n' + err.message);
+                alert('ไม่สามารถลบหมวดหมู่ได้\n\nหากหมวดหมู่นี้ถูกใช้งานอยู่ ให้ย้ายครุภัณฑ์ไปหมวดอื่นก่อน\n\n' + err.message);
             }
         }
 
@@ -1651,18 +1410,9 @@ function responseJSON(obj) {
             bar.classList.toggle('hidden', selectedStickerIds.size === 0);
         }
 
-        function selectAllVisibleAssets() {
-            const search = document.getElementById('searchInput').value.toLowerCase().trim();
-            const catFilter = document.getElementById('categoryFilter').value;
-            assets.filter(item => {
-                const matchSearch = item.name.toLowerCase().includes(search) || item.code.toLowerCase().includes(search) || item.location.toLowerCase().includes(search);
-                return matchSearch && (!catFilter || item.category === catFilter);
-            }).forEach(item => selectedStickerIds.add(String(item.id)));
-            renderAssets();
-        }
-
-        function clearStickerSelection() {
-            selectedStickerIds.clear();
+        async function selectAllVisibleAssets() {
+            assets.forEach(item => selectedStickerIds.add(String(item.id)));
+            updateStickerSelectionBar();
             renderAssets();
         }
 
@@ -1720,231 +1470,98 @@ function responseJSON(obj) {
             }
         }
 
-        // Render Asset Grid Cards
+        // Render Asset Grid Cards - server-side pagination/search
         const ASSETS_PER_PAGE = 20;
         let currentAssetPage = 1;
 
         function renderAssetPagination(totalItems) {
             const container = document.getElementById('assetPagination');
             if (!container) return;
-
             const totalPages = Math.max(1, Math.ceil(totalItems / ASSETS_PER_PAGE));
-            if (currentAssetPage > totalPages) currentAssetPage = totalPages;
-
+            currentAssetPage = Math.min(Math.max(1, currentAssetPage), totalPages);
             if (totalItems === 0 || totalPages <= 1) {
-                container.innerHTML = totalItems > 0 ? `
-                    <div class="w-full flex justify-center text-xs text-slate-500">
-                        แสดง ${totalItems} รายการ
-                    </div>
-                ` : '';
+                container.innerHTML = totalItems > 0 ? `<div class="w-full flex justify-center text-xs text-slate-500">แสดง ${totalItems} รายการ</div>` : '';
                 return;
             }
-
             const startItem = (currentAssetPage - 1) * ASSETS_PER_PAGE + 1;
             const endItem = Math.min(currentAssetPage * ASSETS_PER_PAGE, totalItems);
-
             let pageButtons = '';
             const maxButtons = 7;
             let startPage = Math.max(1, currentAssetPage - Math.floor(maxButtons / 2));
             let endPage = Math.min(totalPages, startPage + maxButtons - 1);
-            if (endPage - startPage + 1 < maxButtons) {
-                startPage = Math.max(1, endPage - maxButtons + 1);
-            }
-
-            if (startPage > 1) {
-                pageButtons += `<button onclick="goToAssetPage(1)" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50 hover:border-emerald-300 text-sm font-semibold">1</button>`;
-                if (startPage > 2) pageButtons += `<span class="px-1 text-slate-400">…</span>`;
-            }
-
+            if (endPage - startPage + 1 < maxButtons) startPage = Math.max(1, endPage - maxButtons + 1);
+            if (startPage > 1) { pageButtons += `<button onclick="goToAssetPage(1)" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50 hover:border-emerald-300 text-sm font-semibold">1</button>`; if (startPage > 2) pageButtons += '<span class="px-1 text-slate-400">…</span>'; }
             for (let page = startPage; page <= endPage; page++) {
                 const active = page === currentAssetPage;
                 pageButtons += `<button onclick="goToAssetPage(${page})" class="min-w-9 px-3 py-1.5 rounded-lg border text-sm font-semibold transition ${active ? 'bg-phuket-700 border-phuket-700 text-white shadow-sm' : 'border-slate-200 bg-white text-slate-700 hover:bg-emerald-50 hover:border-emerald-300'}">${page}</button>`;
             }
-
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) pageButtons += `<span class="px-1 text-slate-400">…</span>`;
-                pageButtons += `<button onclick="goToAssetPage(${totalPages})" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50 hover:border-emerald-300 text-sm font-semibold">${totalPages}</button>`;
-            }
-
-            container.innerHTML = `
-                <div class="text-xs text-slate-500">
-                    แสดง ${startItem}-${endItem} จาก ${totalItems} รายการ
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <button onclick="goToAssetPage(${currentAssetPage - 1})" ${currentAssetPage === 1 ? 'disabled' : ''} class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-sm font-semibold transition ${currentAssetPage === 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-emerald-50 hover:border-emerald-300'}">
-                        <i class="fa-solid fa-chevron-left mr-1"></i>ก่อนหน้า
-                    </button>
-                    <div class="flex items-center gap-1">${pageButtons}</div>
-                    <button onclick="goToAssetPage(${currentAssetPage + 1})" ${currentAssetPage === totalPages ? 'disabled' : ''} class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-sm font-semibold transition ${currentAssetPage === totalPages ? 'opacity-40 cursor-not-allowed' : 'hover:bg-emerald-50 hover:border-emerald-300'}">
-                        ถัดไป<i class="fa-solid fa-chevron-right ml-1"></i>
-                    </button>
-                </div>
-            `;
+            if (endPage < totalPages) { if (endPage < totalPages - 1) pageButtons += '<span class="px-1 text-slate-400">…</span>'; pageButtons += `<button onclick="goToAssetPage(${totalPages})" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50 hover:border-emerald-300 text-sm font-semibold">${totalPages}</button>`; }
+            container.innerHTML = `<div class="text-xs text-slate-500">แสดง ${startItem}-${endItem} จาก ${totalItems} รายการ</div><div class="flex items-center gap-1.5"><button onclick="goToAssetPage(${currentAssetPage - 1})" ${currentAssetPage === 1 ? 'disabled' : ''} class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-sm font-semibold ${currentAssetPage === 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-emerald-50 hover:border-emerald-300'}"><i class="fa-solid fa-chevron-left mr-1"></i>ก่อนหน้า</button><div class="flex items-center gap-1">${pageButtons}</div><button onclick="goToAssetPage(${currentAssetPage + 1})" ${currentAssetPage === totalPages ? 'disabled' : ''} class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-sm font-semibold ${currentAssetPage === totalPages ? 'opacity-40 cursor-not-allowed' : 'hover:bg-emerald-50 hover:border-emerald-300'}">ถัดไป<i class="fa-solid fa-chevron-right ml-1"></i></button></div>`;
         }
 
-        function goToAssetPage(page) {
-            const search = document.getElementById('searchInput')?.value.toLowerCase().trim() || '';
-            const catFilter = document.getElementById('categoryFilter')?.value || '';
-            const filteredCount = assets.filter(item => {
-                const matchSearch = String(item.name || '').toLowerCase().includes(search) ||
-                                    String(item.code || '').toLowerCase().includes(search) ||
-                                    String(item.location || '').toLowerCase().includes(search);
-                const matchCat = !catFilter || item.category === catFilter;
-                return matchSearch && matchCat;
-            }).length;
-            const totalPages = Math.max(1, Math.ceil(filteredCount / ASSETS_PER_PAGE));
-            currentAssetPage = Math.min(Math.max(1, page), totalPages);
-            renderAssets();
+        async function goToAssetPage(page) {
+            currentAssetPage = Math.max(1, page);
+            await loadAssetsFromSupabase(currentAssetPage);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function renderAssets() {
             const grid = document.getElementById('assetGrid');
             const emptyState = document.getElementById('emptyState');
-            const search = document.getElementById('searchInput').value.toLowerCase().trim();
-            const catFilter = document.getElementById('categoryFilter').value;
-
-            const filtered = assets.filter(item => {
-                const matchSearch = item.name.toLowerCase().includes(search) || 
-                                    item.code.toLowerCase().includes(search) || 
-                                    item.location.toLowerCase().includes(search);
-                const matchCat = !catFilter || item.category === catFilter;
-                return matchSearch && matchCat;
-            });
-
+            if (!grid) return;
             grid.innerHTML = '';
-
-            if (filtered.length === 0) {
-                emptyState.classList.remove('hidden');
-            } else {
-                emptyState.classList.add('hidden');
-
-                const totalPages = Math.max(1, Math.ceil(filtered.length / ASSETS_PER_PAGE));
-                if (currentAssetPage > totalPages) currentAssetPage = totalPages;
-                const pageItems = filtered.slice(
-                    (currentAssetPage - 1) * ASSETS_PER_PAGE,
-                    currentAssetPage * ASSETS_PER_PAGE
-                );
-
-                pageItems.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = 'bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition duration-200 overflow-hidden flex flex-col group';
-                    
-                    const imgUrl = item.imageUrl || 'https://placehold.co/400x300/e2e8f0/64748b?text=No+Image';
-                    const safeQrId = `card-qr-${String(item.id).replace(/[^a-zA-Z0-9_-]/g, '_')}`;
-
-                    card.innerHTML = `
-                        <div class="relative h-44 bg-slate-100 overflow-hidden">
-                            <label class="absolute top-2.5 left-2.5 z-10 bg-white/95 rounded-lg px-2 py-1.5 shadow flex items-center gap-1.5 cursor-pointer text-xs font-semibold text-slate-700" onclick="event.stopPropagation()">
-                                <input type="checkbox" class="asset-sticker-check w-4 h-4 accent-emerald-600" data-asset-id="${item.id}" ${selectedStickerIds.has(String(item.id)) ? 'checked' : ''} onchange="toggleStickerSelection('${item.id}', this.checked)">
-                                <span>เลือกพิมพ์</span>
-                            </label>
-                            <img src="${imgUrl}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                            <span class="absolute top-2.5 left-2.5 bg-phuket-800/90 backdrop-blur-sm text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full shadow">
-                                ${item.category}
-                            </span>
-                            ${isAdminLoggedIn ? `
-                                <div class="absolute top-2.5 right-2.5 flex gap-1">
-                                    <button onclick="event.stopPropagation(); openEditAssetModal('${item.id}')" class="w-7 h-7 bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center shadow text-xs transition" title="แก้ไข">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                    <button onclick="event.stopPropagation(); deleteAsset('${item.id}')" class="w-7 h-7 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center shadow text-xs transition" title="ลบ">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </div>
-                            ` : ''}
-                        </div>
-
-                        <div class="p-4 flex-grow flex flex-col justify-between space-y-3">
-                            <div>
-                                <h3 class="font-bold text-slate-900 text-base line-clamp-1 group-hover:text-phuket-700 transition cursor-pointer" onclick="openDetailModalById('${item.id}')">${item.name}</h3>
-                                <p class="text-xs font-mono font-semibold text-phuket-800 mt-0.5">รหัส: ${item.code}</p>
-                                
-                                <div class="mt-2.5 space-y-1 text-xs text-slate-600">
-                                    <p class="flex items-center gap-1.5"><i class="fa-solid fa-location-dot text-red-500 w-4"></i><span class="truncate">${item.location}</span></p>
-                                    <p class="flex items-center gap-1.5"><i class="fa-solid fa-calendar-day text-phuket-600 w-4"></i><span>ได้รับ: ${formatThaiDate(item.receivedDate) || '-'}</span></p>
-                                </div>
-                            </div>
-
-                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                                <div>
-                                    <span class="text-[10px] text-slate-400 block">มูลค่า</span>
-                                    <span class="font-bold text-slate-800">${item.amount ? Number(item.amount).toLocaleString('th-TH') + ' ฿' : '-'}</span>
-                                </div>
-
-                                <div class="flex items-center gap-1.5">
-                                    <!-- Mini unique QR Code per asset: click to preview QR image -->
-                                    <button type="button"
-                                        onclick="openAssetQrPreview('${item.id}')"
-                                        class="bg-white p-1 border border-slate-200 rounded-lg hover:border-phuket-600 hover:bg-emerald-50 transition shadow-sm"
-                                        title="ดูตัวอย่าง QR Code">
-                                        <div id="${safeQrId}"></div>
-                                    </button>
-                                    <button onclick="openDetailModalById('${item.id}')" class="px-2.5 py-1.5 bg-phuket-700 hover:bg-phuket-800 text-white font-semibold rounded-lg text-xs shadow transition">
-                                        รายละเอียด
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                });
-
-                // Generate distinct QR code preview for each asset card
-                pageItems.forEach(item => {
-                    const safeQrId = `card-qr-${String(item.id).replace(/[^a-zA-Z0-9_-]/g, '_')}`;
-                    const container = document.getElementById(safeQrId);
-                    if (container) {
-                        container.innerHTML = '';
-                        const scanUrl = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(item.id)}`;
-                        new QRCode(container, {
-                            text: scanUrl,
-                            width: 48,
-                            height: 48,
-                            colorDark: '#14532d',
-                            colorLight: '#ffffff',
-                            correctLevel: QRCode.CorrectLevel.H
-                        });
-                        addLogoToQr(container, 7);
-                    }
-                });
+            if (!assets.length) {
+                emptyState?.classList.remove('hidden');
+                renderAssetPagination(totalAssetCount);
+                updateStickerSelectionBar();
+                updateStats();
+                return;
             }
-
-            renderAssetPagination(filtered.length);
+            emptyState?.classList.add('hidden');
+            assets.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition duration-200 overflow-hidden flex flex-col group';
+                const imgUrl = item.imageUrl || 'https://placehold.co/400x300/e2e8f0/64748b?text=No+Image';
+                const safeQrId = `card-qr-${String(item.id).replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+                card.innerHTML = `<div class="relative h-44 bg-slate-100 overflow-hidden"><label class="absolute top-2.5 left-2.5 z-10 bg-white/95 rounded-lg px-2 py-1.5 shadow flex items-center gap-1.5 cursor-pointer text-xs font-semibold text-slate-700" onclick="event.stopPropagation()"><input type="checkbox" class="asset-sticker-check w-4 h-4 accent-emerald-600" data-asset-id="${item.id}" ${selectedStickerIds.has(String(item.id)) ? 'checked' : ''} onchange="toggleStickerSelection('${item.id}', this.checked)"><span>เลือกพิมพ์</span></label><img src="${imgUrl}" alt="${escapeHtml(item.name)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"><span class="absolute top-2.5 left-2.5 bg-phuket-800/90 backdrop-blur-sm text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full shadow">${escapeHtml(item.category)}</span>${isAdminLoggedIn ? `<div class="absolute top-2.5 right-2.5 flex gap-1"><button onclick="event.stopPropagation(); openEditAssetModal('${item.id}')" class="w-7 h-7 bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center shadow text-xs transition" title="แก้ไข"><i class="fa-solid fa-pen"></i></button><button onclick="event.stopPropagation(); deleteAsset('${item.id}')" class="w-7 h-7 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center shadow text-xs transition" title="ลบ"><i class="fa-solid fa-trash-can"></i></button></div>` : ''}</div><div class="p-4 flex-grow flex flex-col justify-between space-y-3"><div><h3 class="font-bold text-slate-900 text-base line-clamp-1 group-hover:text-phuket-700 transition cursor-pointer" onclick="openDetailModalById('${item.id}')">${escapeHtml(item.name)}</h3><p class="text-xs font-mono font-semibold text-phuket-800 mt-0.5">รหัส: ${escapeHtml(item.code)}</p><div class="mt-2.5 space-y-1 text-xs text-slate-600"><p class="flex items-center gap-1.5"><i class="fa-solid fa-location-dot text-red-500 w-4"></i><span class="truncate">${escapeHtml(item.location)}</span></p><p class="flex items-center gap-1.5"><i class="fa-solid fa-calendar-day text-phuket-600 w-4"></i><span>ได้รับ: ${formatThaiDate(item.receivedDate) || '-'}</span></p></div></div><div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs"><div><span class="text-[10px] text-slate-400 block">มูลค่า</span><span class="font-bold text-slate-800">${item.amount ? Number(item.amount).toLocaleString('th-TH') + ' ฿' : '-'}</span></div><div class="flex items-center gap-1.5"><button type="button" onclick="openAssetQrPreview('${item.id}')" class="bg-white p-1 border border-slate-200 rounded-lg hover:border-phuket-600 hover:bg-emerald-50 transition shadow-sm" title="ดูตัวอย่าง QR Code"><div id="${safeQrId}"></div></button><button onclick="openDetailModalById('${item.id}')" class="px-2.5 py-1.5 bg-phuket-700 hover:bg-phuket-800 text-white font-semibold rounded-lg text-xs shadow transition">รายละเอียด</button></div></div></div>`;
+                grid.appendChild(card);
+            });
+            assets.forEach(item => {
+                const safeQrId = `card-qr-${String(item.id).replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+                const container = document.getElementById(safeQrId);
+                if (container) {
+                    new QRCode(container, { text: `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(item.id)}`, width: 48, height: 48, colorDark: '#14532d', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+                    addLogoToQr(container, 7);
+                }
+            });
+            renderAssetPagination(totalAssetCount);
             updateStickerSelectionBar();
             updateStats();
         }
 
         function updateStats() {
-            document.getElementById('statTotal').textContent = assets.length;
-            document.getElementById('statCategories').textContent = categories.length;
+            document.getElementById('statTotal').textContent = totalAssetCount.toLocaleString('th-TH');
+            document.getElementById('statCategories').textContent = categories.length.toLocaleString('th-TH');
         }
 
         function resetFilters() {
             currentAssetPage = 1;
             document.getElementById('searchInput').value = '';
             document.getElementById('categoryFilter').value = '';
-            renderAssets();
+            loadAssetsFromSupabase(1);
         }
 
-        function resetView() {
-            resetFilters();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        function resetView() { resetFilters(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-        // เมื่อค้นหาหรือเปลี่ยนหมวดหมู่ ให้กลับไปหน้า 1
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('searchInput');
             const categoryFilter = document.getElementById('categoryFilter');
-
             searchInput?.addEventListener('input', () => {
                 currentAssetPage = 1;
-                renderAssets();
+                clearTimeout(searchDebounceTimer);
+                searchDebounceTimer = setTimeout(() => loadAssetsFromSupabase(1), 250);
             });
-            categoryFilter?.addEventListener('change', () => {
-                currentAssetPage = 1;
-                renderAssets();
-            });
+            categoryFilter?.addEventListener('change', () => { currentAssetPage = 1; loadAssetsFromSupabase(1); });
         });
 
         // แสดงตัวอย่าง QR Code ของครุภัณฑ์ก่อนดาวน์โหลด
@@ -2080,12 +1697,10 @@ function responseJSON(obj) {
             }, 150);
         }
 
-        function openDetailModalById(id) {
-            const asset = assets.find(a => String(a.id) === String(id));
-            if (!asset) {
-                alert('ไม่พบข้อมูลครุภัณฑ์รายการนี้');
-                return;
-            }
+        async function openDetailModalById(id) {
+            let asset = assets.find(a => String(a.id) === String(id));
+            if (!asset) asset = await fetchAssetByIdOrCode(id);
+            if (!asset) { alert('ไม่พบข้อมูลครุภัณฑ์รายการนี้'); return; }
             openDetailModal(asset);
         }
 
@@ -2270,22 +1885,18 @@ function responseJSON(obj) {
         function openAddAssetModal() {
             if (!isAdminLoggedIn) return;
             document.getElementById('assetForm').reset();
-            document.getElementById('formAssetId').value = '';
+            document.getElementById('formAssetId').value = 'AST-' + Date.now();
             document.getElementById('formImageUrl').value = '';
             document.getElementById('formImagePreview').src = 'https://placehold.co/150x150/e2e8f0/64748b?text=Image';
             document.getElementById('formHeaderTitle').textContent = 'บันทึกข้อมูลครุภัณฑ์ใหม่';
             document.getElementById('formHeaderIcon').className = 'fa-solid fa-circle-plus text-amber-400';
-            
-            // Auto-generate timestamp-based unique asset ID
-            document.getElementById('formAssetId').value = 'AST-' + Date.now();
-            
             openModal('assetFormModal');
         }
 
-        function openEditAssetModal(id) {
-            const asset = assets.find(a => a.id === id);
+        async function openEditAssetModal(id) {
+            if (!isAdminLoggedIn) return;
+            const asset = assets.find(a => String(a.id) === String(id)) || await fetchAssetByIdOrCode(id);
             if (!asset) return;
-
             document.getElementById('formAssetId').value = asset.id;
             document.getElementById('formCategory').value = asset.category;
             document.getElementById('formName').value = asset.name;
@@ -2298,180 +1909,148 @@ function responseJSON(obj) {
             document.getElementById('formDetail').value = asset.detail || '';
             document.getElementById('formImageUrl').value = asset.imageUrl || '';
             document.getElementById('formImagePreview').src = asset.imageUrl || 'https://placehold.co/150x150/e2e8f0/64748b?text=Image';
-
+            document.getElementById('formImageFile').value = '';
             document.getElementById('formHeaderTitle').textContent = 'แก้ไขข้อมูลครุภัณฑ์';
             document.getElementById('formHeaderIcon').className = 'fa-solid fa-pen-to-square text-amber-400';
-
             openModal('assetFormModal');
         }
 
         function previewImageFile(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('formImagePreview').src = e.target.result;
-                    document.getElementById('formImageUrl').value = e.target.result; // Base64 image
-                };
+                reader.onload = e => { document.getElementById('formImagePreview').src = e.target.result; };
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
+        async function uploadAssetImage(file, assetId) {
+            if (!file || !supabaseClient) return document.getElementById('formImageUrl').value || '';
+            const safeName = file.name.toLowerCase().replace(/[^a-z0-9._-]/g, '-');
+            const path = `${assetId}/${Date.now()}-${safeName}`;
+            const { error } = await supabaseClient.storage.from('asset-images').upload(path, file, { upsert: true, contentType: file.type || 'image/jpeg' });
+            if (error) throw error;
+            const { data } = supabaseClient.storage.from('asset-images').getPublicUrl(path);
+            return data.publicUrl;
+        }
+
         async function saveAssetForm(e) {
             e.preventDefault();
-
+            if (!isAdminLoggedIn || !supabaseClient) { alert('กรุณาเข้าสู่ระบบ Admin'); return; }
             const id = document.getElementById('formAssetId').value || `AST-${Date.now()}`;
-            const newAsset = {
-                id,
-                category: document.getElementById('formCategory').value,
-                name: document.getElementById('formName').value.trim(),
-                code: document.getElementById('formCode').value.trim(),
-                location: document.getElementById('formLocation').value.trim(),
-                budget: document.getElementById('formBudget').value.trim() || 'งบเงินบำรุง',
-                amount: parseFloat(String(document.getElementById('formAmount').value).replace(/,/g, '')) || 0,
-                receivedDate: formatThaiDate(document.getElementById('formReceivedDate').value.trim()),
-                dikaNo: document.getElementById('formDikaNo').value.trim(),
-                detail: document.getElementById('formDetail').value.trim(),
-                imageUrl: document.getElementById('formImageUrl').value || ''
-            };
-
+            const file = document.getElementById('formImageFile').files?.[0] || null;
             try {
                 setSyncStatus('connecting', 'กำลังบันทึกข้อมูล...');
-                const result = await callGasApi({ action: 'save', data: newAsset });
-                if (result.status !== 'success') throw new Error(result.message || 'บันทึกไม่สำเร็จ');
+                let imageUrl = document.getElementById('formImageUrl').value || '';
+                if (file) imageUrl = await uploadAssetImage(file, id);
+                const payload = {
+                    id,
+                    category: document.getElementById('formCategory').value,
+                    name: document.getElementById('formName').value.trim(),
+                    code: document.getElementById('formCode').value.trim(),
+                    location: document.getElementById('formLocation').value.trim(),
+                    budget: document.getElementById('formBudget').value.trim() || 'งบเงินบำรุง',
+                    amount: parseFloat(String(document.getElementById('formAmount').value).replace(/,/g, '')) || 0,
+                    received_date: thaiDateToStorage(document.getElementById('formReceivedDate').value.trim()),
+                    dika_no: document.getElementById('formDikaNo').value.trim(),
+                    detail: document.getElementById('formDetail').value.trim(),
+                    image_url: imageUrl
+                };
+                const { error } = await supabaseClient.from('assets').upsert(payload, { onConflict: 'id' });
+                if (error) throw error;
                 closeModal('assetFormModal');
-                await loadAssetsFromGoogleSheet();
-                alert('บันทึกข้อมูลลง Google Sheet เรียบร้อยแล้ว');
+                await loadAssetsFromSupabase(currentAssetPage);
+                alert('บันทึกข้อมูลลง Supabase เรียบร้อยแล้ว');
             } catch (err) {
-                console.error('GAS save error:', err);
-                setSyncStatus('error', 'บันทึก Google Sheet ไม่สำเร็จ');
-                alert('ไม่สามารถบันทึกข้อมูลลง Google Sheet ได้\n\n' + err.message);
+                console.error('Supabase save error:', err);
+                setSyncStatus('error', 'บันทึกข้อมูลไม่สำเร็จ');
+                alert('ไม่สามารถบันทึกข้อมูลลง Supabase ได้\n\n' + err.message);
             }
         }
 
         async function deleteAsset(id) {
+            if (!isAdminLoggedIn || !supabaseClient) return;
             if (!confirm('คุณแน่ใจหรือไม่ว่าต้องการลบรายการครุภัณฑ์นี้?')) return;
-
             try {
                 setSyncStatus('connecting', 'กำลังลบข้อมูล...');
-                const result = await callGasApi({ action: 'delete', id });
-                if (result.status !== 'success') throw new Error(result.message || 'ลบไม่สำเร็จ');
-                await loadAssetsFromGoogleSheet();
-                alert('ลบข้อมูลจาก Google Sheet เรียบร้อยแล้ว');
+                const { error } = await supabaseClient.from('assets').delete().eq('id', id);
+                if (error) throw error;
+                selectedStickerIds.delete(String(id));
+                await loadAssetsFromSupabase(Math.min(currentAssetPage, Math.max(1, Math.ceil((totalAssetCount - 1) / ASSETS_PER_PAGE))));
+                alert('ลบข้อมูลจาก Supabase เรียบร้อยแล้ว');
             } catch (err) {
-                console.error('GAS delete error:', err);
+                console.error('Supabase delete error:', err);
                 setSyncStatus('error', 'ลบข้อมูลไม่สำเร็จ');
-                alert('ไม่สามารถลบข้อมูลจาก Google Sheet ได้\n\n' + err.message);
+                alert('ไม่สามารถลบข้อมูลจาก Supabase ได้\n\n' + err.message);
             }
         }
 
-        // ===== Startup Login Gate =====
-        function handleStartupLogin(e) {
+        // ===== Supabase Auth =====
+        async function signInAdmin(username, password) {
+            if (!initSupabaseClient()) throw new Error('ยังไม่ได้ตั้งค่า Supabase URL/Key');
+            const { error } = await supabaseClient.auth.signInWithPassword({ email: String(username || '').trim(), password });
+            if (error) throw error;
+            await refreshAdminState();
+        }
+
+        async function handleStartupLogin(e) {
             e.preventDefault();
             const username = document.getElementById('startupUsername').value.trim();
             const password = document.getElementById('startupPassword').value;
             const errorEl = document.getElementById('startupLoginError');
-
-            if (username === 'admin' && password === 'admin1234') {
-                isAdminLoggedIn = true;
-                document.getElementById('authText').textContent = 'ออกจากระบบ (Admin)';
-                document.getElementById('authIcon').className = 'fa-solid fa-right-from-bracket';
-                document.getElementById('adminControls').classList.remove('hidden');
+            try {
+                await signInAdmin(username, password);
                 errorEl.classList.add('hidden');
                 const loginPage = document.getElementById('startupLogin');
-                loginPage.style.transition = 'opacity .25s ease';
-                loginPage.style.opacity = '0';
-                loginPage.style.pointerEvents = 'none';
+                loginPage.style.transition = 'opacity .25s ease'; loginPage.style.opacity = '0'; loginPage.style.pointerEvents = 'none';
                 setTimeout(() => loginPage.classList.add('hidden'), 260);
                 document.getElementById('startupPassword').value = '';
                 renderAssets();
-            } else {
-                errorEl.textContent = 'ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง';
-                errorEl.classList.remove('hidden');
-                document.getElementById('startupPassword').focus();
-                document.getElementById('startupPassword').select();
+            } catch (err) {
+                console.error(err); errorEl.textContent = 'เข้าสู่ระบบไม่สำเร็จ: ' + (err.message || 'ตรวจสอบอีเมล/รหัสผ่าน'); errorEl.classList.remove('hidden');
             }
         }
 
         function toggleStartupPassword() {
-            const input = document.getElementById('startupPassword');
-            const icon = document.getElementById('startupPasswordIcon');
-            if (!input || !icon) return;
-            const show = input.type === 'password';
-            input.type = show ? 'text' : 'password';
-            icon.className = show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+            const input = document.getElementById('startupPassword'); const icon = document.getElementById('startupPasswordIcon');
+            if (!input || !icon) return; const show = input.type === 'password'; input.type = show ? 'text' : 'password'; icon.className = show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
         }
 
-        // Authentication Handler
-        function toggleAuthModal() {
+        async function toggleAuthModal() {
             if (isAdminLoggedIn) {
                 if (confirm('ต้องการออกจากระบบ Admin หรือไม่?')) {
-                    isAdminLoggedIn = false;
-                    document.getElementById('authText').textContent = 'เข้าสู่ระบบ Admin';
-                    document.getElementById('authIcon').className = 'fa-solid fa-right-to-bracket';
-                    document.getElementById('adminControls').classList.add('hidden');
-                    renderAssets();
-                    const loginPage = document.getElementById('startupLogin');
-                    loginPage.classList.remove('hidden');
-                    loginPage.style.opacity = '1';
-                    loginPage.style.pointerEvents = 'auto';
-                    document.getElementById('startupUsername').value = '';
-                    document.getElementById('startupPassword').value = '';
-                    document.getElementById('startupLoginError').classList.add('hidden');
-                    setTimeout(() => document.getElementById('startupUsername')?.focus(), 100);
+                    await supabaseClient.auth.signOut();
+                    isAdminLoggedIn = false; await refreshAdminState(); renderAssets();
+                    const loginPage = document.getElementById('startupLogin'); loginPage.classList.remove('hidden'); loginPage.style.opacity = '1'; loginPage.style.pointerEvents = 'auto';
+                    document.getElementById('startupUsername').value = ''; document.getElementById('startupPassword').value = ''; document.getElementById('startupLoginError').classList.add('hidden');
                 }
-            } else {
-                openModal('loginModal');
-            }
+            } else openModal('loginModal');
         }
 
-        function handleLogin(e) {
+        async function handleLogin(e) {
             e.preventDefault();
-            const u = document.getElementById('loginUsername').value.trim();
-            const p = document.getElementById('loginPassword').value.trim();
-
-            if (u === 'admin' && p === 'admin1234') {
-                isAdminLoggedIn = true;
-                document.getElementById('authText').textContent = 'ออกจากระบบ (Admin)';
-                document.getElementById('authIcon').className = 'fa-solid fa-right-from-bracket';
-                document.getElementById('adminControls').classList.remove('hidden');
-                closeModal('loginModal');
-                document.getElementById('loginUsername').value = '';
-                document.getElementById('loginPassword').value = '';
-                renderAssets();
-            } else {
-                alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
-            }
+            try {
+                await signInAdmin(document.getElementById('loginUsername').value.trim(), document.getElementById('loginPassword').value.trim());
+                closeModal('loginModal'); document.getElementById('loginUsername').value = ''; document.getElementById('loginPassword').value = ''; renderAssets();
+            } catch (err) { alert('เข้าสู่ระบบไม่สำเร็จ\n\n' + (err.message || 'ตรวจสอบข้อมูลเข้าสู่ระบบ')); }
         }
 
-        // GAS Settings Handler
-        function openGasSettingsModal() {
-            document.getElementById('gasWebAppUrlInput').value = gasWebAppUrl || DEFAULT_GAS_WEB_APP_URL;
-            openModal('gasSettingsModal');
+        function openSupabaseSettingsModal() {
+            document.getElementById('supabaseUrlInput').value = supabaseUrl || '';
+            document.getElementById('supabaseKeyInput').value = supabaseAnonKey || '';
+            openModal('supabaseSettingsModal');
         }
 
-        function saveGasSettings(e) {
+        async function saveSupabaseSettings(e) {
             e.preventDefault();
-            gasWebAppUrl = document.getElementById('gasWebAppUrlInput').value.trim();
-            if (!gasWebAppUrl) gasWebAppUrl = DEFAULT_GAS_WEB_APP_URL;
-            localStorage.setItem('phuket_gas_url', gasWebAppUrl);
-            closeModal('gasSettingsModal');
-            loadAssetsFromGoogleSheet();
-            alert('บันทึกตั้งค่า Google Apps Script Web App URL เรียบร้อยแล้ว');
+            supabaseUrl = document.getElementById('supabaseUrlInput').value.trim().replace(/\/$/, '');
+            supabaseAnonKey = document.getElementById('supabaseKeyInput').value.trim();
+            localStorage.setItem('phuket_supabase_url', supabaseUrl); localStorage.setItem('phuket_supabase_anon_key', supabaseAnonKey);
+            closeModal('supabaseSettingsModal'); initSupabaseClient(); await refreshAdminState(); await loadAssetsFromSupabase(1);
+            alert('บันทึกการตั้งค่า Supabase เรียบร้อยแล้ว');
         }
 
-        function openGasCodeModal() {
-            openModal('gasCodeModal');
-        }
-
-        function copyGasCode() {
-            const code = document.getElementById('gasCodeText').textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                alert('คัดลอกโค้ด Google Apps Script (Code.gs) เรียบร้อยแล้ว!');
-            }).catch(() => {
-                document.execCommand('copy');
-                alert('คัดลอกโค้ดเรียบร้อยแล้ว!');
-            });
-        }
+        function openSupabaseInfoModal() { openModal('supabaseInfoModal'); }
+        function copySupabaseSetup() { navigator.clipboard?.writeText(document.getElementById('supabaseSetupText').textContent || '').then(() => alert('คัดลอกข้อมูลเรียบร้อยแล้ว')); }
 
         function openManageCategoryModal() {
             renderCategoryListContainer();
