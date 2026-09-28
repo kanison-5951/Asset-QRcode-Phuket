@@ -347,6 +347,813 @@
         body.qr-scan-only > #detailModal > div {
             max-height: 92vh !important;
         }
+
+        /* ==================== PASTEL THEME ====================
+           เปลี่ยนเฉพาะงานออกแบบ/สี ไม่กระทบ JavaScript, Supabase,
+           QR Code, การค้นหา, การ Export หรือฟังก์ชันการทำงาน
+        ======================================================== */
+        @media screen {
+            :root {
+                --pastel-pink: #e9a8c5;
+                --pastel-rose: #d982aa;
+                --pastel-lavender: #b9b1df;
+                --pastel-blue: #9fc8e8;
+                --pastel-sky: #b8dff0;
+                --pastel-mint: #a9d9ca;
+                --pastel-cream: #fff8f2;
+                --pastel-bg: #f8f6fb;
+                --pastel-text: #4b4655;
+            }
+
+            body {
+                background:
+                    radial-gradient(circle at 8% 8%, rgba(233,168,197,.20), transparent 28%),
+                    radial-gradient(circle at 92% 12%, rgba(185,177,223,.20), transparent 30%),
+                    radial-gradient(circle at 50% 100%, rgba(169,217,202,.14), transparent 32%),
+                    linear-gradient(135deg, #fffafd 0%, #f7f5fb 52%, #f3f9fb 100%) !important;
+                color: var(--pastel-text);
+            }
+
+            /* Header */
+            header {
+                background: linear-gradient(135deg, #c96899 0%, #a99ed2 52%, #82b8d8 100%) !important;
+                border-bottom: 1px solid rgba(255,255,255,.35) !important;
+                box-shadow: 0 8px 25px rgba(120,95,130,.14) !important;
+            }
+            header .text-phuket-100 {
+                color: #fff3fa !important;
+            }
+
+            /* Startup login */
+            #startupLogin {
+                background:
+                    radial-gradient(circle at 15% 15%, rgba(255,255,255,.30), transparent 25%),
+                    radial-gradient(circle at 85% 75%, rgba(255,255,255,.22), transparent 28%),
+                    linear-gradient(135deg, #9d6f99 0%, #8f86bd 48%, #79abc5 100%) !important;
+            }
+            #startupLogin > div.relative {
+                border: 1px solid rgba(255,255,255,.65);
+                box-shadow: 0 28px 70px rgba(82,64,96,.24) !important;
+            }
+            #startupLogin > div.relative > .hidden.md\:flex {
+                background: linear-gradient(145deg, #c878a0 0%, #a79bd1 52%, #83b8d7 100%) !important;
+            }
+            #startupLogin .text-emerald-200 {
+                color: #fff0f7 !important;
+            }
+            #startupLogin .text-emerald-300 {
+                color: #ffe1ef !important;
+            }
+            #startupLogin .bg-emerald-50 {
+                background: #fff0f6 !important;
+            }
+            #startupLogin .text-emerald-700 {
+                color: #a9577f !important;
+            }
+            #startupLogin .bg-emerald-500 {
+                background: #d982aa !important;
+            }
+
+            /* Hero / statistics */
+            main > div:first-child {
+                background: linear-gradient(135deg, #c96899 0%, #a99ed2 52%, #82b8d8 100%) !important;
+                box-shadow: 0 14px 32px rgba(126,101,135,.14) !important;
+                border: 1px solid rgba(255,255,255,.32) !important;
+            }
+
+            /* Search / filter */
+            main > div:nth-child(2) {
+                background: rgba(255,255,255,.86) !important;
+                border-color: #eadbea !important;
+                box-shadow: 0 10px 28px rgba(126,101,135,.08) !important;
+                backdrop-filter: blur(10px);
+            }
+            #searchInput, #categoryFilter {
+                background: #fffafd !important;
+                border-color: #ddcfdf !important;
+                color: #514b59 !important;
+            }
+            #searchInput:focus, #categoryFilter:focus,
+            #assetFormModal input:focus, #assetFormModal select:focus,
+            #assetFormModal textarea:focus, #supabaseSettingsModal input:focus,
+            #supabaseSettingsModal textarea:focus, #loginModal input:focus,
+            #qrScannerModal input:focus {
+                border-color: #d982aa !important;
+                box-shadow: 0 0 0 3px rgba(217,130,170,.16) !important;
+            }
+
+            /* Asset cards */
+            #assetGrid > div {
+                border-color: #e8dfee !important;
+                background: rgba(255,255,255,.94) !important;
+                box-shadow: 0 7px 22px rgba(92,76,105,.07) !important;
+                transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+            }
+            #assetGrid > div:hover {
+                border-color: #d9b9cf !important;
+                box-shadow: 0 15px 34px rgba(126,101,135,.13) !important;
+                transform: translateY(-3px);
+            }
+
+            /* Selection bar */
+            #stickerSelectionBar {
+                background: linear-gradient(90deg, #fff0f6, #f2effb, #eef8f8) !important;
+                border-color: #e7c7da !important;
+                color: #66556a !important;
+            }
+
+            /* Empty state */
+            #emptyState {
+                background: rgba(255,255,255,.92) !important;
+                border-color: #e8dfee !important;
+            }
+
+            /* Supabase / Export cards */
+            main > div:nth-child(5),
+            main > div:nth-child(6) {
+                border-color: #e8dfee !important;
+                box-shadow: 0 9px 24px rgba(92,76,105,.06) !important;
+            }
+
+            /* Footer */
+            footer {
+                background: linear-gradient(135deg, #5f5870 0%, #7b7194 100%) !important;
+                border-top-color: rgba(255,255,255,.16) !important;
+                color: #f7f2fa !important;
+            }
+
+            /* Modal headers */
+            #loginModal > div > div:first-child,
+            #qrScannerModal > div > div:first-child,
+            #detailModal > div > div:first-child,
+            #assetFormModal > div > div:first-child,
+            #categoryModal > div > div:first-child,
+            #supabaseSettingsModal > div > div:first-child,
+            #supabaseInfoModal > div > div:first-child {
+                background: linear-gradient(135deg, #c96899 0%, #a99ed2 55%, #82b8d8 100%) !important;
+            }
+
+            /* Modal surfaces */
+            #loginModal > div, #qrScannerModal > div, #detailModal > div,
+            #assetFormModal > div, #categoryModal > div,
+            #supabaseSettingsModal > div, #supabaseInfoModal > div,
+            #assetQrPreviewModal > div {
+                border: 1px solid rgba(217,130,170,.30) !important;
+                box-shadow: 0 25px 65px rgba(72,61,80,.20) !important;
+            }
+
+            /* Primary buttons */
+            button.bg-phuket-700,
+            button.bg-phuket-600,
+            button.bg-emerald-600 {
+                background-image: linear-gradient(135deg, #d982aa, #9e93c9) !important;
+                border-color: transparent !important;
+            }
+            button.bg-phuket-700:hover,
+            button.bg-phuket-600:hover,
+            button.bg-emerald-600:hover {
+                background-image: linear-gradient(135deg, #c96f9d, #8c80bd) !important;
+            }
+
+            /* QR / action accents */
+            header button.bg-amber-400 {
+                background: #f3c978 !important;
+                color: #594d58 !important;
+            }
+            header button.bg-amber-400:hover {
+                background: #f0bd60 !important;
+            }
+
+            /* Common pastel utility colors */
+            .text-phuket-600 { color: #c96f9d !important; }
+            .text-phuket-700 { color: #b45d8b !important; }
+            .text-phuket-800 { color: #984c78 !important; }
+            .text-phuket-900 { color: #793b61 !important; }
+            .bg-phuket-50 { background-color: #fff7fb !important; }
+            .bg-phuket-100 { background-color: #fceaf3 !important; }
+            .bg-phuket-500 { background-color: #e9a8c5 !important; }
+            .bg-phuket-600 { background-color: #df8eb3 !important; }
+            .bg-phuket-700 { background-color: #d17ca5 !important; }
+            .bg-phuket-800 { background-color: #c26b96 !important; }
+            .bg-phuket-900 { background-color: #a9557f !important; }
+
+            /* Softer emerald accents used throughout existing markup */
+            .text-emerald-600 { color: #62a995 !important; }
+            .text-emerald-700 { color: #579985 !important; }
+            .text-emerald-800 { color: #4d806f !important; }
+            .bg-emerald-50 { background-color: #edf9f5 !important; }
+            .bg-emerald-100 { background-color: #ddf1ea !important; }
+            .bg-emerald-200 { background-color: #c6e7dd !important; }
+            .bg-emerald-500 { background-color: #78bda9 !important; }
+            .bg-emerald-600 { background-color: #69ad99 !important; }
+            .bg-emerald-700 { background-color: #579985 !important; }
+            .border-emerald-100 { border-color: #d7eee7 !important; }
+            .border-emerald-200 { border-color: #c3e4da !important; }
+
+            /* Blue accents */
+            .text-sky-300 { color: #d8eff8 !important; }
+            .bg-sky-50 { background-color: #eef9fd !important; }
+            .bg-sky-100 { background-color: #e1f2fa !important; }
+
+            /* Form/file controls */
+            input[type="file"]::file-selector-button {
+                background: #fceaf3 !important;
+                color: #a9577f !important;
+            }
+
+            /* Small interactive elements */
+            button:hover {
+                transition: all .18s ease;
+            }
+        }
+
+
+        /* ==================== DARKER PASTEL THEME ==================== */
+        @media screen {
+            :root {
+                --dp-rose: #b85f86;
+                --dp-rose-dark: #91466a;
+                --dp-plum: #77689f;
+                --dp-plum-dark: #5b4e7e;
+                --dp-blue: #5e91b5;
+                --dp-blue-dark: #456f8c;
+                --dp-mint: #5d9f8d;
+                --dp-bg: #f2eef5;
+                --dp-text: #3f3a47;
+            }
+
+            body {
+                background:
+                    radial-gradient(circle at 8% 8%, rgba(184,95,134,.18), transparent 27%),
+                    radial-gradient(circle at 92% 15%, rgba(119,104,159,.18), transparent 30%),
+                    radial-gradient(circle at 55% 100%, rgba(93,159,141,.12), transparent 30%),
+                    linear-gradient(135deg, #f4eff5 0%, #eeebf3 52%, #eaf1f4 100%) !important;
+                color: var(--dp-text);
+            }
+
+            header {
+                background: linear-gradient(135deg, #91466a 0%, #665985 52%, #456f8c 100%) !important;
+                box-shadow: 0 10px 28px rgba(57,45,68,.22) !important;
+            }
+
+            header .text-phuket-100 { color: #f8eaf1 !important; }
+
+            /* Login */
+            #startupLogin {
+                background:
+                    radial-gradient(circle at 15% 15%, rgba(255,255,255,.18), transparent 25%),
+                    radial-gradient(circle at 85% 75%, rgba(255,255,255,.13), transparent 28%),
+                    linear-gradient(135deg, #68455f 0%, #5b527d 50%, #3f6f8b 100%) !important;
+            }
+
+            #startupLogin > div.relative {
+                box-shadow: 0 30px 75px rgba(40,31,49,.34) !important;
+            }
+
+            #startupLogin > div.relative > .hidden.md\:flex {
+                background: linear-gradient(145deg, #985272 0%, #716293 53%, #4e819f 100%) !important;
+            }
+
+            #startupLogin .text-emerald-200 { color: #f5dce8 !important; }
+            #startupLogin .text-emerald-300 { color: #ffd0e3 !important; }
+
+            /* Main hero */
+            main > div:first-child {
+                background: linear-gradient(135deg, #91466a 0%, #665985 53%, #456f8c 100%) !important;
+                box-shadow: 0 15px 34px rgba(74,58,82,.22) !important;
+            }
+
+            /* Search */
+            main > div:nth-child(2) {
+                background: rgba(255,255,255,.90) !important;
+                border-color: #d8cbdc !important;
+                box-shadow: 0 10px 28px rgba(70,57,78,.11) !important;
+            }
+
+            #searchInput, #categoryFilter {
+                background: #fbf9fc !important;
+                border-color: #cfc2d3 !important;
+                color: #443d4b !important;
+            }
+
+            #searchInput:focus, #categoryFilter:focus,
+            #assetFormModal input:focus, #assetFormModal select:focus,
+            #assetFormModal textarea:focus, #supabaseSettingsModal input:focus,
+            #supabaseSettingsModal textarea:focus, #loginModal input:focus,
+            #qrScannerModal input:focus {
+                border-color: #b85f86 !important;
+                box-shadow: 0 0 0 3px rgba(184,95,134,.18) !important;
+            }
+
+            /* Cards */
+            #assetGrid > div {
+                border-color: #d9cfe0 !important;
+                background: rgba(255,255,255,.96) !important;
+                box-shadow: 0 8px 22px rgba(62,50,70,.10) !important;
+            }
+
+            #assetGrid > div:hover {
+                border-color: #c49ab2 !important;
+                box-shadow: 0 16px 36px rgba(94,65,89,.17) !important;
+                transform: translateY(-3px);
+            }
+
+            /* Selection */
+            #stickerSelectionBar {
+                background: linear-gradient(90deg, #f7e6ee, #eeeaf7, #e6f2f0) !important;
+                border-color: #d4b9c9 !important;
+            }
+
+            /* Empty */
+            #emptyState {
+                background: rgba(255,255,255,.94) !important;
+                border-color: #d9cfe0 !important;
+            }
+
+            /* Footer */
+            footer {
+                background: linear-gradient(135deg, #3e3848 0%, #514967 100%) !important;
+                color: #eee9f2 !important;
+                border-top-color: rgba(255,255,255,.12) !important;
+            }
+
+            /* Modals */
+            #loginModal > div > div:first-child,
+            #qrScannerModal > div > div:first-child,
+            #detailModal > div > div:first-child,
+            #assetFormModal > div > div:first-child,
+            #categoryModal > div > div:first-child,
+            #supabaseSettingsModal > div > div:first-child,
+            #supabaseInfoModal > div > div:first-child {
+                background: linear-gradient(135deg, #91466a 0%, #665985 55%, #456f8c 100%) !important;
+            }
+
+            #loginModal > div, #qrScannerModal > div, #detailModal > div,
+            #assetFormModal > div, #categoryModal > div,
+            #supabaseSettingsModal > div, #supabaseInfoModal > div,
+            #assetQrPreviewModal > div {
+                border-color: rgba(184,95,134,.30) !important;
+                box-shadow: 0 28px 70px rgba(45,36,52,.28) !important;
+            }
+
+            /* Primary actions */
+            button.bg-phuket-700,
+            button.bg-phuket-600,
+            button.bg-emerald-600 {
+                background-image: linear-gradient(135deg, #b85f86, #77689f) !important;
+            }
+
+            button.bg-phuket-700:hover,
+            button.bg-phuket-600:hover,
+            button.bg-emerald-600:hover {
+                background-image: linear-gradient(135deg, #a95178, #67598d) !important;
+            }
+
+            /* Header action */
+            header button.bg-amber-400 {
+                background: #e2b85f !important;
+                color: #463c43 !important;
+            }
+            header button.bg-amber-400:hover { background: #d7a94e !important; }
+
+            /* Pastel utility colors, deeper */
+            .text-phuket-600 { color: #a95178 !important; }
+            .text-phuket-700 { color: #91466a !important; }
+            .text-phuket-800 { color: #783b59 !important; }
+            .text-phuket-900 { color: #5e2d46 !important; }
+
+            .bg-phuket-50 { background-color: #fdf3f7 !important; }
+            .bg-phuket-100 { background-color: #f7dfe9 !important; }
+            .bg-phuket-500 { background-color: #c8799b !important; }
+            .bg-phuket-600 { background-color: #b85f86 !important; }
+            .bg-phuket-700 { background-color: #a95178 !important; }
+            .bg-phuket-800 { background-color: #91466a !important; }
+            .bg-phuket-900 { background-color: #783b59 !important; }
+
+            .text-emerald-600 { color: #4e8979 !important; }
+            .text-emerald-700 { color: #477b6d !important; }
+            .text-emerald-800 { color: #3d665b !important; }
+            .bg-emerald-50 { background-color: #e9f4f0 !important; }
+            .bg-emerald-100 { background-color: #d6eae4 !important; }
+            .bg-emerald-200 { background-color: #bddbd2 !important; }
+            .bg-emerald-500 { background-color: #6aa994 !important; }
+            .bg-emerald-600 { background-color: #5d9f8d !important; }
+            .bg-emerald-700 { background-color: #4e8979 !important; }
+            .border-emerald-100 { border-color: #cfe5de !important; }
+            .border-emerald-200 { border-color: #b9d9cf !important; }
+
+            /* Stronger text contrast in cards/forms */
+            .text-slate-800 { color: #413b48 !important; }
+            .text-slate-700 { color: #514a58 !important; }
+            .text-slate-600 { color: #625a69 !important; }
+
+            input[type="file"]::file-selector-button {
+                background: #f5dfe9 !important;
+                color: #91466a !important;
+            }
+        }
+
+
+        /* ==================== BRIGHT PASTEL THEME ==================== */
+        @media screen {
+            :root {
+                --bp-pink: #ff7eb6;
+                --bp-purple: #8b7cf6;
+                --bp-blue: #55b8f2;
+                --bp-cyan: #54d6d2;
+                --bp-yellow: #ffd166;
+                --bp-mint: #72d6a3;
+                --bp-bg: #f8fbff;
+            }
+
+            body {
+                background:
+                    radial-gradient(circle at 8% 8%, rgba(255,126,182,.22), transparent 27%),
+                    radial-gradient(circle at 92% 12%, rgba(139,124,246,.20), transparent 28%),
+                    radial-gradient(circle at 50% 100%, rgba(84,214,210,.16), transparent 32%),
+                    linear-gradient(135deg, #fff9fc 0%, #f7f7ff 50%, #f1fbff 100%) !important;
+                color: #3f3a50;
+            }
+
+            header {
+                background: linear-gradient(135deg, #ff6fae 0%, #8b7cf6 52%, #45b9ef 100%) !important;
+                border-bottom: 1px solid rgba(255,255,255,.35) !important;
+                box-shadow: 0 8px 25px rgba(91,73,140,.16) !important;
+            }
+
+            header .text-phuket-100 { color: #fff5fb !important; }
+
+            /* Login */
+            #startupLogin {
+                background:
+                    radial-gradient(circle at 15% 15%, rgba(255,255,255,.30), transparent 25%),
+                    radial-gradient(circle at 85% 75%, rgba(255,255,255,.22), transparent 28%),
+                    linear-gradient(135deg, #ff72b2 0%, #8c7cf4 50%, #49b9e9 100%) !important;
+            }
+
+            #startupLogin > div.relative {
+                box-shadow: 0 28px 65px rgba(78,63,125,.25) !important;
+            }
+
+            #startupLogin > div.relative > .hidden.md\:flex {
+                background: linear-gradient(145deg, #ff70ad 0%, #9582f4 52%, #4bbce9 100%) !important;
+            }
+
+            #startupLogin .text-emerald-200 { color: #eafff7 !important; }
+            #startupLogin .text-emerald-300 { color: #fff0a8 !important; }
+
+            /* Hero */
+            main > div:first-child {
+                background: linear-gradient(135deg, #ff70ad 0%, #8b7cf6 52%, #45b9ef 100%) !important;
+                box-shadow: 0 14px 32px rgba(91,73,140,.16) !important;
+                border: 1px solid rgba(255,255,255,.35) !important;
+            }
+
+            /* Search */
+            main > div:nth-child(2) {
+                background: rgba(255,255,255,.93) !important;
+                border-color: #e4dff5 !important;
+                box-shadow: 0 9px 25px rgba(87,72,120,.08) !important;
+                backdrop-filter: blur(10px);
+            }
+
+            #searchInput, #categoryFilter {
+                background: #ffffff !important;
+                border-color: #d8d2ea !important;
+                color: #433d51 !important;
+            }
+
+            #searchInput:focus, #categoryFilter:focus,
+            #assetFormModal input:focus, #assetFormModal select:focus,
+            #assetFormModal textarea:focus, #supabaseSettingsModal input:focus,
+            #supabaseSettingsModal textarea:focus, #loginModal input:focus,
+            #qrScannerModal input:focus {
+                border-color: #8b7cf6 !important;
+                box-shadow: 0 0 0 3px rgba(139,124,246,.16) !important;
+            }
+
+            /* Asset cards */
+            #assetGrid > div {
+                border-color: #e3ddf1 !important;
+                background: rgba(255,255,255,.97) !important;
+                box-shadow: 0 7px 20px rgba(75,63,104,.08) !important;
+                transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+            }
+
+            #assetGrid > div:hover {
+                border-color: #c9bdf6 !important;
+                box-shadow: 0 15px 32px rgba(98,76,151,.14) !important;
+                transform: translateY(-3px);
+            }
+
+            /* Selection toolbar */
+            #stickerSelectionBar {
+                background: linear-gradient(90deg, #fff0f7, #f1efff, #eafaff) !important;
+                border-color: #e5c9dc !important;
+            }
+
+            /* Empty */
+            #emptyState {
+                background: rgba(255,255,255,.95) !important;
+                border-color: #e3ddf1 !important;
+            }
+
+            /* Footer */
+            footer {
+                background: linear-gradient(135deg, #61588a 0%, #477fa3 100%) !important;
+                color: #f9f6ff !important;
+                border-top-color: rgba(255,255,255,.18) !important;
+            }
+
+            /* Modal headers */
+            #loginModal > div > div:first-child,
+            #qrScannerModal > div > div:first-child,
+            #detailModal > div > div:first-child,
+            #assetFormModal > div > div:first-child,
+            #categoryModal > div > div:first-child,
+            #supabaseSettingsModal > div > div:first-child,
+            #supabaseInfoModal > div > div:first-child {
+                background: linear-gradient(135deg, #ff70ad 0%, #8b7cf6 55%, #45b9ef 100%) !important;
+            }
+
+            #loginModal > div, #qrScannerModal > div, #detailModal > div,
+            #assetFormModal > div, #categoryModal > div,
+            #supabaseSettingsModal > div, #supabaseInfoModal > div,
+            #assetQrPreviewModal > div {
+                border-color: rgba(139,124,246,.25) !important;
+                box-shadow: 0 24px 60px rgba(65,55,92,.22) !important;
+            }
+
+            /* Main buttons */
+            button.bg-phuket-700,
+            button.bg-phuket-600,
+            button.bg-emerald-600 {
+                background-image: linear-gradient(135deg, #ff6fae, #8b7cf6) !important;
+                border-color: transparent !important;
+            }
+
+            button.bg-phuket-700:hover,
+            button.bg-phuket-600:hover,
+            button.bg-emerald-600:hover {
+                background-image: linear-gradient(135deg, #f45c9f, #7868eb) !important;
+            }
+
+            /* QR action */
+            header button.bg-amber-400 {
+                background: #ffd166 !important;
+                color: #574a38 !important;
+            }
+            header button.bg-amber-400:hover { background: #ffc94d !important; }
+
+            /* Strong bright pastel utility colors */
+            .text-phuket-600 { color: #e55398 !important; }
+            .text-phuket-700 { color: #c94485 !important; }
+            .text-phuket-800 { color: #a9366e !important; }
+            .text-phuket-900 { color: #842852 !important; }
+
+            .bg-phuket-50 { background-color: #fff5fa !important; }
+            .bg-phuket-100 { background-color: #ffe3f0 !important; }
+            .bg-phuket-500 { background-color: #ff91bd !important; }
+            .bg-phuket-600 { background-color: #ff7eb6 !important; }
+            .bg-phuket-700 { background-color: #f565a7 !important; }
+            .bg-phuket-800 { background-color: #df4f92 !important; }
+            .bg-phuket-900 { background-color: #c53f7d !important; }
+
+            .text-emerald-600 { color: #3d9d78 !important; }
+            .text-emerald-700 { color: #338867 !important; }
+            .text-emerald-800 { color: #2c7057 !important; }
+            .bg-emerald-50 { background-color: #eafff5 !important; }
+            .bg-emerald-100 { background-color: #d9f8e9 !important; }
+            .bg-emerald-200 { background-color: #bff0d9 !important; }
+            .bg-emerald-500 { background-color: #72d6a3 !important; }
+            .bg-emerald-600 { background-color: #54c98e !important; }
+            .bg-emerald-700 { background-color: #3eb47a !important; }
+            .border-emerald-100 { border-color: #c9f1df !important; }
+            .border-emerald-200 { border-color: #afe8ce !important; }
+
+            .text-slate-800 { color: #40394c !important; }
+            .text-slate-700 { color: #51485d !important; }
+            .text-slate-600 { color: #655b70 !important; }
+
+            input[type="file"]::file-selector-button {
+                background: #ffe3f0 !important;
+                color: #a9366e !important;
+            }
+
+            /* Extra colorful accent on status badges */
+            #syncBadge {
+                background: #dff9ee !important;
+                color: #2f8064 !important;
+            }
+        }
+
+
+        /* ==================== GREEN • BLUE • WHITE PASTEL THEME ==================== */
+        @media screen {
+            :root {
+                --gb-green: #58b89a;
+                --gb-green-dark: #3d967d;
+                --gb-green-light: #dff5ed;
+                --gb-blue: #5fa9d6;
+                --gb-blue-dark: #3f82b0;
+                --gb-blue-light: #e2f2fb;
+                --gb-sky: #8bc9e8;
+                --gb-white: #ffffff;
+                --gb-bg: #f4fafb;
+            }
+
+            body {
+                background:
+                    radial-gradient(circle at 8% 8%, rgba(88,184,154,.16), transparent 28%),
+                    radial-gradient(circle at 92% 12%, rgba(95,169,214,.17), transparent 30%),
+                    radial-gradient(circle at 50% 100%, rgba(139,201,232,.12), transparent 32%),
+                    linear-gradient(135deg, #f9fdfc 0%, #f4f9fc 52%, #f1f9f8 100%) !important;
+                color: #3d4c50;
+            }
+
+            /* Header */
+            header {
+                background: linear-gradient(135deg, #4fa88d 0%, #5f9fcb 55%, #78badb 100%) !important;
+                border-bottom: 1px solid rgba(255,255,255,.45) !important;
+                box-shadow: 0 8px 25px rgba(61,112,125,.15) !important;
+            }
+            header .text-phuket-100 {
+                color: #effcf8 !important;
+            }
+
+            /* Login */
+            #startupLogin {
+                background:
+                    radial-gradient(circle at 15% 15%, rgba(255,255,255,.30), transparent 25%),
+                    radial-gradient(circle at 85% 75%, rgba(255,255,255,.22), transparent 28%),
+                    linear-gradient(135deg, #55a990 0%, #609fca 55%, #7bbfdb 100%) !important;
+            }
+
+            #startupLogin > div.relative {
+                box-shadow: 0 28px 65px rgba(55,88,96,.22) !important;
+                border: 1px solid rgba(255,255,255,.70);
+            }
+
+            #startupLogin > div.relative > .hidden.md\:flex {
+                background: linear-gradient(145deg, #4fa88d 0%, #609fc9 55%, #7abbd8 100%) !important;
+            }
+
+            #startupLogin .text-emerald-200 { color: #e7fff6 !important; }
+            #startupLogin .text-emerald-300 { color: #dff8ff !important; }
+
+            /* Main hero */
+            main > div:first-child {
+                background: linear-gradient(135deg, #4fa88d 0%, #5f9fcb 55%, #78badb 100%) !important;
+                box-shadow: 0 14px 32px rgba(61,112,125,.14) !important;
+                border: 1px solid rgba(255,255,255,.42) !important;
+            }
+
+            /* Search/filter */
+            main > div:nth-child(2) {
+                background: rgba(255,255,255,.94) !important;
+                border-color: #d5e9e7 !important;
+                box-shadow: 0 9px 25px rgba(65,103,112,.07) !important;
+                backdrop-filter: blur(10px);
+            }
+
+            #searchInput, #categoryFilter {
+                background: #ffffff !important;
+                border-color: #cbdfe4 !important;
+                color: #405158 !important;
+            }
+
+            #searchInput:focus, #categoryFilter:focus,
+            #assetFormModal input:focus, #assetFormModal select:focus,
+            #assetFormModal textarea:focus, #supabaseSettingsModal input:focus,
+            #supabaseSettingsModal textarea:focus, #loginModal input:focus,
+            #qrScannerModal input:focus {
+                border-color: #5fa9d6 !important;
+                box-shadow: 0 0 0 3px rgba(95,169,214,.17) !important;
+            }
+
+            /* Asset cards */
+            #assetGrid > div {
+                border-color: #d7e8eb !important;
+                background: rgba(255,255,255,.98) !important;
+                box-shadow: 0 7px 20px rgba(64,94,102,.08) !important;
+                transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+            }
+
+            #assetGrid > div:hover {
+                border-color: #a9d5d0 !important;
+                box-shadow: 0 15px 32px rgba(57,112,113,.13) !important;
+                transform: translateY(-3px);
+            }
+
+            /* Selection toolbar */
+            #stickerSelectionBar {
+                background: linear-gradient(90deg, #e9f8f3, #eaf5fb, #f5fbfc) !important;
+                border-color: #bfe1d8 !important;
+            }
+
+            /* Empty state */
+            #emptyState {
+                background: rgba(255,255,255,.96) !important;
+                border-color: #d7e8eb !important;
+            }
+
+            /* Footer */
+            footer {
+                background: linear-gradient(135deg, #477d72 0%, #4e7896 100%) !important;
+                color: #f3fcfb !important;
+                border-top-color: rgba(255,255,255,.18) !important;
+            }
+
+            /* Modal headers */
+            #loginModal > div > div:first-child,
+            #qrScannerModal > div > div:first-child,
+            #detailModal > div > div:first-child,
+            #assetFormModal > div > div:first-child,
+            #categoryModal > div > div:first-child,
+            #supabaseSettingsModal > div > div:first-child,
+            #supabaseInfoModal > div > div:first-child {
+                background: linear-gradient(135deg, #4fa88d 0%, #5f9fcb 55%, #78badb 100%) !important;
+            }
+
+            #loginModal > div, #qrScannerModal > div, #detailModal > div,
+            #assetFormModal > div, #categoryModal > div,
+            #supabaseSettingsModal > div, #supabaseInfoModal > div,
+            #assetQrPreviewModal > div {
+                border-color: rgba(95,169,214,.25) !important;
+                box-shadow: 0 24px 60px rgba(50,76,84,.20) !important;
+            }
+
+            /* Primary buttons */
+            button.bg-phuket-700,
+            button.bg-phuket-600,
+            button.bg-emerald-600 {
+                background-image: linear-gradient(135deg, #4fa88d, #5f9fcb) !important;
+                border-color: transparent !important;
+            }
+
+            button.bg-phuket-700:hover,
+            button.bg-phuket-600:hover,
+            button.bg-emerald-600:hover {
+                background-image: linear-gradient(135deg, #3d967d, #4d91bd) !important;
+            }
+
+            /* QR action */
+            header button.bg-amber-400 {
+                background: #f6d77a !important;
+                color: #4d5550 !important;
+            }
+            header button.bg-amber-400:hover {
+                background: #f1ca5e !important;
+            }
+
+            /* Green palette */
+            .text-phuket-600 { color: #3d967d !important; }
+            .text-phuket-700 { color: #347e6b !important; }
+            .text-phuket-800 { color: #2c6b5b !important; }
+            .text-phuket-900 { color: #245648 !important; }
+
+            .bg-phuket-50 { background-color: #f0faf7 !important; }
+            .bg-phuket-100 { background-color: #ddf3eb !important; }
+            .bg-phuket-500 { background-color: #70c6aa !important; }
+            .bg-phuket-600 { background-color: #58b89a !important; }
+            .bg-phuket-700 { background-color: #4fa88d !important; }
+            .bg-phuket-800 { background-color: #3d967d !important; }
+            .bg-phuket-900 { background-color: #347e6b !important; }
+
+            /* Emerald */
+            .text-emerald-600 { color: #3d967d !important; }
+            .text-emerald-700 { color: #347e6b !important; }
+            .text-emerald-800 { color: #2c6b5b !important; }
+            .bg-emerald-50 { background-color: #eaf8f3 !important; }
+            .bg-emerald-100 { background-color: #daf2e9 !important; }
+            .bg-emerald-200 { background-color: #c2e8dc !important; }
+            .bg-emerald-500 { background-color: #72c7aa !important; }
+            .bg-emerald-600 { background-color: #5ab899 !important; }
+            .bg-emerald-700 { background-color: #4ca587 !important; }
+            .border-emerald-100 { border-color: #d1eee5 !important; }
+            .border-emerald-200 { border-color: #bde3d7 !important; }
+
+            /* Blue accents */
+            .text-sky-300 { color: #d9f1fb !important; }
+            .bg-sky-50 { background-color: #eff9fd !important; }
+            .bg-sky-100 { background-color: #e1f3fb !important; }
+
+            /* Readable neutral text */
+            .text-slate-800 { color: #3e4c52 !important; }
+            .text-slate-700 { color: #4d5b61 !important; }
+            .text-slate-600 { color: #637178 !important; }
+
+            input[type="file"]::file-selector-button {
+                background: #ddf3eb !important;
+                color: #347e6b !important;
+            }
+
+            #syncBadge {
+                background: #dff5ed !important;
+                color: #347e6b !important;
+            }
+        }
+
 </style>
 </head>
 <body class="bg-slate-50 min-h-screen flex flex-col text-slate-800">
