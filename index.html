@@ -371,7 +371,7 @@
                 <div class="relative z-10 grid grid-cols-3 gap-3">
                     <div class="rounded-2xl bg-white/10 border border-white/15 p-4 backdrop-blur-sm"><i class="fa-solid fa-qrcode text-2xl text-emerald-300"></i><p class="mt-2 text-sm font-semibold">QR Code</p><p class="text-[11px] text-white/60">เข้าถึงข้อมูลทันที</p></div>
                     <div class="rounded-2xl bg-white/10 border border-white/15 p-4 backdrop-blur-sm"><i class="fa-solid fa-boxes-stacked text-2xl text-amber-300"></i><p class="mt-2 text-sm font-semibold">ทะเบียนครุภัณฑ์</p><p class="text-[11px] text-white/60">จัดการข้อมูลเป็นระบบ</p></div>
-                    <div class="rounded-2xl bg-white/10 border border-white/15 p-4 backdrop-blur-sm"><i class="fa-solid fa-database text-2xl text-sky-300"></i><p class="mt-2 text-sm font-semibold">Supabase</p><p class="text-[11px] text-white/60">ข้อมูลเชื่อมต่อออนไลน์</p></div>
+                    <div class="rounded-2xl bg-white/10 border border-white/15 p-4 backdrop-blur-sm"><i class="fa-solid fa-database text-2xl text-sky-300"></i><p class="mt-2 text-sm font-semibold">ฐานข้อมูลออนไลน์</p><p class="text-[11px] text-white/60">ข้อมูลเชื่อมต่อออนไลน์</p></div>
                 </div>
             </div>
             <div class="p-7 sm:p-10 flex items-center">
@@ -431,6 +431,10 @@
                     <button onclick="openAddAssetModal()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs sm:text-sm font-semibold rounded-lg shadow transition flex items-center gap-1.5">
                         <i class="fa-solid fa-circle-plus"></i>
                         <span>+ เพิ่มครุภัณฑ์</span>
+                    </button>
+                    <button onclick="exportAssetsToGoogleSheets()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold rounded-lg shadow transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-export"></i>
+                        <span>Export to Google Sheets</span>
                     </button>
                 </div>
 
@@ -528,6 +532,13 @@
             </button>
         </div>
 
+        <!-- Export to Google Sheets -->
+        <div class="bg-white border border-emerald-200 rounded-xl p-4 shadow-sm flex flex-col md:flex-row justify-between items-center gap-3 mb-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0 font-bold">
+                    <i class="fa-solid fa-file-export text-lg"></i>
+                </div>
+                
         <!-- Supabase Settings & Code Reference Modal Link -->
         <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col md:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-3">
@@ -916,7 +927,11 @@
                 <div class="flex items-center gap-2"><i class="fa-solid fa-database text-amber-400"></i><h3 class="font-bold text-base">การตั้งค่า Supabase</h3></div>
                 <button onclick="closeModal('supabaseSettingsModal')" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <form onsubmit="saveSupabaseSettings(event)" class="p-6 space-y-4 text-xs">
+            <div class="rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-emerald-900">
+                    <div class="font-bold flex items-center gap-2"><i class="fa-solid fa-file-export text-emerald-700"></i> ส่งออกข้อมูลไป Google Sheets</div>
+                    <div class="mt-1 text-[11px] leading-relaxed">ข้อมูลจะบันทึกและจัดการที่ Supabase เท่านั้น เมื่อกด Export ระบบจะสร้างไฟล์ CSV สำหรับนำไปเปิดใน Google Sheets โดยไม่มีการ Sync อัตโนมัติ</div>
+                </div>
+                <form onsubmit="saveSupabaseSettings(event)" class="p-6 space-y-4 text-xs">
                 <div><label class="block font-semibold text-slate-700 mb-1">Supabase Project URL</label><input type="url" id="supabaseUrlInput" placeholder="https://xxxxxxxx.supabase.co" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-phuket-600 focus:outline-none font-mono text-xs"></div>
                 <div><label class="block font-semibold text-slate-700 mb-1">Publishable / Anon Key</label><textarea id="supabaseKeyInput" rows="3" placeholder="sb_publishable_... หรือ anon key" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-phuket-600 focus:outline-none font-mono text-xs"></textarea></div>
                 <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-900"><p class="font-bold"><i class="fa-solid fa-shield-halved mr-1"></i>ความปลอดภัย</p><p class="mt-1">ใส่เฉพาะ Publishable/Anon Key ในเว็บเท่านั้น ห้ามใส่ service_role key เพราะ key ดังกล่าวต้องเก็บไว้ฝั่ง server และสามารถข้าม RLS ได้</p></div>
@@ -930,7 +945,7 @@
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden">
             <div class="bg-phuket-800 px-6 py-4 text-white flex justify-between items-center"><div class="flex items-center gap-2"><i class="fa-solid fa-code text-amber-400"></i><h3 class="font-bold text-base">Supabase Database Setup</h3></div><button onclick="closeModal('supabaseInfoModal')" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button></div>
             <div class="p-6 overflow-y-auto space-y-4 flex-grow text-xs">
-                <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg"><p class="font-bold text-emerald-900">ขั้นตอนสั้น ๆ</p><ol class="list-decimal ml-5 mt-1 space-y-1 text-emerald-900"><li>สร้าง Project ใน Supabase</li><li>เปิด SQL Editor แล้วรันไฟล์ <b>supabase_schema.sql</b></li><li>สร้าง Admin User ใน Authentication</li><li>นำ Project URL และ Publishable/Anon Key มาใส่ในเมนูตั้งค่า</li><li>Deploy ไฟล์ HTML นี้บน GitHub Pages</li></ol></div>
+                <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg"><p class="font-bold text-emerald-900">ขั้นตอนสั้น ๆ</p><ol class="list-decimal ml-5 mt-1 space-y-1 text-emerald-900"><li>สร้าง Project ใน Supabase</li><li>เปิด SQL Editor แล้วรันไฟล์ <b>supabase_schema.sql</b></li><li>สร้าง Admin User ใน Authentication</li><li>นำ Project URL และ Publishable/Anon Key มาใส่ในเมนูตั้งค่า</li><li>Deploy ไฟล์ HTML นี้บน GitHub Pages</li><li>กด <b>Export to Google Sheets</b> เมื่อต้องการนำข้อมูลออกไปทำรายงาน</li></ol></div>
                 <pre id="supabaseSetupText" class="bg-slate-900 text-emerald-400 p-4 rounded-xl font-mono text-[11px] overflow-x-auto whitespace-pre-wrap">ฐานข้อมูล: public.assets / public.categories
 Storage bucket: asset-images
 Auth: Supabase Auth (Email + Password)
@@ -999,13 +1014,25 @@ RLS: ผู้ใช้ทั่วไปอ่านข้อมูลและ
         let supabaseAnonKey = localStorage.getItem('phuket_supabase_anon_key') || DEFAULT_SUPABASE_ANON_KEY;
         let supabaseClient = null;
 
+        function validateSupabaseUrl(url) {
+            try {
+                const u = new URL(String(url || '').trim());
+                return u.protocol === 'https:' && /\.supabase\.co$/i.test(u.hostname) && !u.pathname.replace(/\/$/, '');
+            } catch (e) { return false; }
+        }
+
         function initSupabaseClient() {
             if (!supabaseUrl || !supabaseAnonKey || typeof window.supabase === 'undefined') {
                 supabaseClient = null;
                 return false;
             }
+            if (!validateSupabaseUrl(supabaseUrl)) {
+                console.error('Invalid Supabase Project URL:', supabaseUrl);
+                supabaseClient = null;
+                return false;
+            }
             try {
-                supabaseClient = window.supabase.createClient(supabaseUrl, supabaseAnonKey, {
+                supabaseClient = window.supabase.createClient(supabaseUrl.replace(/\/$/, ''), supabaseAnonKey, {
                     auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
                 });
                 return true;
@@ -1984,11 +2011,92 @@ RLS: ผู้ใช้ทั่วไปอ่านข้อมูลและ
             }
         }
 
+        // ===== Google Sheets Export (CSV) =====
+        function csvEscape(value) {
+            const text = value === null || value === undefined ? '' : String(value);
+            return /[",\n\r]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
+        }
+
+        async function fetchAllAssetsForExport() {
+            if (!initSupabaseClient()) throw new Error('ยังไม่ได้ตั้งค่า Supabase');
+            const search = document.getElementById('searchInput')?.value.trim() || '';
+            const category = document.getElementById('categoryFilter')?.value || '';
+            const safeSearch = search.replace(/[,%()]/g, ' ').replace(/\s+/g, ' ').trim();
+            const pageSize = 1000;
+            let from = 0;
+            const all = [];
+
+            while (true) {
+                let query = supabaseClient
+                    .from('assets')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .range(from, from + pageSize - 1);
+                if (safeSearch) query = query.or(`name.ilike.%${safeSearch}%,code.ilike.%${safeSearch}%,location.ilike.%${safeSearch}%`);
+                if (category) query = query.eq('category', category);
+                const { data, error } = await query;
+                if (error) throw error;
+                const rows = data || [];
+                all.push(...rows.map(normalizeAsset));
+                if (rows.length < pageSize) break;
+                from += pageSize;
+            }
+            return all;
+        }
+
+        async function exportAssetsToGoogleSheets() {
+            if (!isAdminLoggedIn) {
+                alert('กรุณาเข้าสู่ระบบ Admin ก่อนส่งออกข้อมูล');
+                return;
+            }
+            const btns = [...document.querySelectorAll('button[onclick="exportAssetsToGoogleSheets()"]')];
+            btns.forEach(b => { b.disabled = true; b.classList.add('opacity-60', 'cursor-wait'); });
+            try {
+                setSyncStatus('connecting', 'กำลังเตรียมไฟล์สำหรับ Google Sheets...');
+                const rows = await fetchAllAssetsForExport();
+                if (!rows.length) {
+                    alert('ไม่พบข้อมูลสำหรับส่งออก');
+                    return;
+                }
+                const headers = ['ID','หมวดหมู่','ชื่อครุภัณฑ์','รหัสครุภัณฑ์','รายละเอียด','แหล่งงบประมาณ','จำนวนเงิน','วันที่รับ','เลขที่ฎีกา','สถานที่','URL รูปภาพ'];
+                const csvRows = [headers, ...rows.map(a => [
+                    a.id, a.category, a.name, a.code, a.detail, a.budget, a.amount,
+                    a.receivedDate, a.dikaNo, a.location, a.imageUrl
+                ])];
+                // UTF-8 BOM ทำให้ Google Sheets/Excel อ่านภาษาไทยได้ถูกต้อง
+                const csv = '\uFEFF' + csvRows.map(row => row.map(csvEscape).join(',')).join('\r\n');
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                const now = new Date();
+                const stamp = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}`;
+                a.href = url;
+                a.download = `ครุภัณฑ์_${stamp}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+                setSyncStatus('connected', `พร้อมใช้งาน (${totalAssetCount.toLocaleString('th-TH')} รายการ)`);
+                alert(`ส่งออกข้อมูลเรียบร้อย ${rows.length.toLocaleString('th-TH')} รายการ\n\nไฟล์ CSV พร้อมนำเข้า Google Sheets แล้ว\n\nGoogle Sheets → File → Import → Upload → เลือกไฟล์ CSV`);
+            } catch (err) {
+                console.error('Export error:', err);
+                setSyncStatus('error', 'ส่งออกข้อมูลไม่สำเร็จ');
+                alert('ไม่สามารถส่งออกข้อมูลได้\n\n' + (err.message || err));
+            } finally {
+                btns.forEach(b => { b.disabled = false; b.classList.remove('opacity-60', 'cursor-wait'); });
+            }
+        }
+
         // ===== Supabase Auth =====
         async function signInAdmin(username, password) {
-            if (!initSupabaseClient()) throw new Error('ยังไม่ได้ตั้งค่า Supabase URL/Key');
+            if (!supabaseUrl || !supabaseAnonKey) throw new Error('ยังไม่ได้ตั้งค่า Supabase URL/Publishable(Anon) Key');
+            if (!validateSupabaseUrl(supabaseUrl)) throw new Error('Supabase Project URL ไม่ถูกต้อง ต้องเป็นรูปแบบ https://xxxxx.supabase.co');
+            if (!initSupabaseClient()) throw new Error('ไม่สามารถสร้าง Supabase Client ได้ กรุณาตรวจสอบ Project URL และ Publishable/Anon Key');
             const { error } = await supabaseClient.auth.signInWithPassword({ email: String(username || '').trim(), password });
-            if (error) throw error;
+            if (error) {
+                if (/Invalid login credentials/i.test(error.message)) throw new Error('อีเมลหรือรหัสผ่านไม่ถูกต้อง หรือยังไม่ได้สร้าง User ใน Supabase Authentication');
+                throw new Error(error.message || 'เข้าสู่ระบบไม่สำเร็จ');
+            }
             await refreshAdminState();
         }
 
